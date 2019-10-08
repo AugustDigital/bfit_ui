@@ -1,36 +1,55 @@
 import React from "react";
-
+import { withStyles } from "@material-ui/core";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
+import Reward from "./pages/Reward";
+import CreateReward from "./pages/CreateReward";
+const styles = theme => ({
+  root: {
+    background: theme.background
+  }
+});
 class App extends React.Component {
-  state = {};
-  async componentDidMount() {
-    const resp = await fetch("http://localhost:5000/");
-    const json = await resp.json();
-    this.setState({ data: json.data });
-    console.log(json);
-  }
-  async login() {
-    alert("!");
-    const resp = await fetch("http://localhost:5000/auth/google");
-    const json = await resp.json();
-    this.setState({ data: json.data });
-    console.log(json);
-  }
   render() {
-    const { data } = this.state;
     return (
-      <div>
-        {data ? (
-          <div>
-            {data}
-            <button onClick={this.login}>Login</button>
-            <a href="http://localhost:5000/auth/google">Test login</a>
-          </div>
-        ) : (
-          <div>Api Offline</div>
-        )}
-      </div>
+      <Router>
+        <div>
+          {/* <div>TODO PROPER NAVBAR</div> */}
+          <nav>
+            <ul>
+              <li>
+                <Link to="/">Dashboard</Link>
+              </li>
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
+              <li>
+                <Link to="/reward">Reward</Link>
+              </li>
+              <li>
+                <Link to="/create">Create</Link>
+              </li>
+            </ul>
+          </nav>
+          <Switch>
+            <Route path="/create">
+              <CreateReward />
+            </Route>
+            <Route path="/reward">
+              <Reward />
+            </Route>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/">
+              <Dashboard />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
     );
   }
 }
 
-export default App;
+export default withStyles(styles, { withTheme: true })(App);
