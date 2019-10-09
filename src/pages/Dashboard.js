@@ -1,8 +1,11 @@
-import React from "react";
-import { withStyles } from "@material-ui/core";
+import React, { Fragment } from "react";
+import { withStyles, Grid } from "@material-ui/core";
+
+import { BrowserRouter as Link } from "react-router-dom";
+import NavBar from "./components/NavBar";
 const styles = theme => ({
   root: {
-    background: theme.background
+    background: "white"
   }
 });
 class Dashboard extends React.Component {
@@ -10,7 +13,17 @@ class Dashboard extends React.Component {
   async componentDidMount() {}
   render() {
     const { classes } = this.props;
-    return <div className={classes.root}>Dashboard</div>;
+    return (
+      <Fragment>
+        <NavBar />
+        <Grid
+          container
+          direction="column"
+          justify="space-between"
+          alignItems="center"
+        ></Grid>
+      </Fragment>
+    );
   }
 }
 
