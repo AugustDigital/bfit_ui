@@ -88,9 +88,6 @@ class NavBar extends React.Component {
     open: false,
     anchorRef: null
   };
-  constructor(props) {
-    super(props);
-  }
   async componentDidMount() {}
   onClick = e => {
     this.setState({ anchorRef: this.state.anchorRef ? null : e.currentTarget });
@@ -124,6 +121,7 @@ class NavBar extends React.Component {
               onClick={this.onClick}
             >
               <img
+                alt="dropdown icon"
                 width="25px"
                 height="25px"
                 src={this.state.anchorRef ? CloseIcon : ProfileIcon}

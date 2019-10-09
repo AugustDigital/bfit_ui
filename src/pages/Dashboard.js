@@ -1,7 +1,5 @@
 import React, { Fragment } from "react";
 import { withStyles, Grid } from "@material-ui/core";
-
-import { BrowserRouter as Link } from "react-router-dom";
 import NavBar from "./components/NavBar";
 const styles = theme => ({
   root: {
