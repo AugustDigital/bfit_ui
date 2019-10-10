@@ -11,15 +11,32 @@ import ProfileIcon from "../../res/profile_icon.svg";
 import CloseIcon from "../../res/close_icon.svg";
 const styles = theme => ({
   root: {
-    background: "white"
+    background: "white",
+    position: "fixed",
+    zIndex: 1,
+    width: "100%",
+    height: "50px"
+  },
+  overlay: {
+    backgroundColor: "rgba(0,0,0,0.5)",
+    width: "100vw",
+    height: "100vh",
+    position: "fixed"
   },
   header: {
     textAlign: "center",
     fontWeight: "500",
-    fontSize: "2.1em",
-    marginBottom: "-1vh"
+    fontSize: "1.9em",
+    position: "relative",
+    marginTop: "7px"
+  },
+  dropdownButton: {
+    position: "fixed",
+    right: "5%",
+    top: 0
   },
   popper: {
+    marginTop: "7px",
     zIndex: 1,
     '&[x-placement*="bottom"] $arrow': {
       top: 0,
@@ -101,34 +118,24 @@ class NavBar extends React.Component {
     const { classes } = this.props;
     return (
       <Fragment>
-        <Grid
-          className={classes.root}
-          container
-          direction="row"
-          justify="space-between"
-          alignItems="center"
-        >
-          <Grid item xs={10}>
-            <Typography className={classes.header} variant="h5">
-              BFIT
-            </Typography>
-          </Grid>
-          <Grid item xs={2}>
-            <IconButton
-              aria-label="delete"
-              className={classes.margin}
-              ref={this.buttonRef}
-              onClick={this.onClick}
-            >
-              <img
-                alt="dropdown icon"
-                width="25px"
-                height="25px"
-                src={this.state.anchorRef ? CloseIcon : ProfileIcon}
-              />
-            </IconButton>
-          </Grid>
-        </Grid>
+        <div className={classes.root}>
+          <Typography className={classes.header} variant="h5">
+            BFIT
+          </Typography>
+          <IconButton
+            aria-label="delete"
+            className={classes.dropdownButton}
+            ref={this.buttonRef}
+            onClick={this.onClick}
+          >
+            <img
+              alt="dropdown icon"
+              width="25px"
+              height="25px"
+              src={this.state.anchorRef ? CloseIcon : ProfileIcon}
+            />
+          </IconButton>
+        </div>
         <Popper
           placement="bottom-end"
           open={this.state.anchorRef !== null}
@@ -152,6 +159,9 @@ class NavBar extends React.Component {
           <span className={classes.arrow} ref={this.handleArrowRef} />
           <Paper className={classes.dropDownContent}>Text</Paper>
         </Popper>
+        {this.state.anchorRef !== null ? (
+          <div onClick={this.onClick} className={classes.overlay} />
+        ) : null}
       </Fragment>
     );
   }
