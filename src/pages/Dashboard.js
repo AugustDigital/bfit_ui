@@ -133,16 +133,16 @@ class Dashboard extends React.Component {
                 <RewardCell className={classes.rewardCell} />
               </Grid>
               <Grid className={classes.rewardCell} item xs={3}>
-                <RewardCell />
+                <RewardCell className={classes.rewardCell} />
               </Grid>
               <Grid className={classes.rewardCell} item xs={3}>
-                <RewardCell />
+                <RewardCell className={classes.rewardCell} />
               </Grid>
               <Grid className={classes.rewardCell} item xs={3}>
-                <RewardCell />
+                <RewardCell className={classes.rewardCell} />
               </Grid>
               <Grid className={classes.rewardCell} item xs={3}>
-                <RewardCell />
+                <RewardCell className={classes.rewardCell} />
               </Grid>
             </Grid>
           </Grid>
