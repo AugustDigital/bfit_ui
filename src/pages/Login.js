@@ -35,6 +35,7 @@ const styles = theme => ({
     },
     height: "100%",
     "& h1": {
+      color: "#032F41",
       fontWeight: "600",
       fontSize: "5em",
       marginLeft: contentMarginLeft
@@ -44,6 +45,7 @@ const styles = theme => ({
         marginRight: contentMarginLeft,
         width: "auto"
       },
+      color: "#032F41",
       fontWeight: "400",
       fontSize: "2.4em",
       marginTop: "3vh",
@@ -179,17 +181,6 @@ class Login extends React.Component {
         </Grid>
         <Grid item xs={12} md={6} className={classes.runnerImage}></Grid>
       </Grid>
-      // <div className={classes.root}>
-      //   {data ? (
-      //     <div>
-      //       {data}
-      //       <button onClick={this.login}>Login</button>
-      //       <a href="http://localhost:5000/auth/google">Test login</a>
-      //     </div>
-      //   ) : (
-      //     <div>Api Offline</div>
-      //   )}
-      // </div>
     );
   }
 }

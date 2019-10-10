@@ -4,29 +4,42 @@ import NavBar from "./components/NavBar";
 import PointsWidget from "./components/PointsWidget";
 import RewardCell from "./components/RewardCell";
 const styles = theme => ({
-  root: {},
+  root: {
+    paddingLeft: "10vw",
+    paddingRight: "10vw"
+  },
   pointsWidget: {
-    width: "50vw"
+    width: "40vw"
   },
   topSectionContainer: {
     width: "100%"
   },
   rewardCell: {
-    minWidth: "25vw",
-    minHeight: "300px"
+    minWidth: "20vw",
+    minHeight: "100px",
+    margin: "5px"
   },
   pointsLabel: {
     marginTop: "100px",
     color: "white",
-    letterSpacing: "3.5px",
-    fontWeight: "400",
+    letterSpacing: "4px",
+    fontWeight: "300",
+    fontSize: "10em",
     textShadow: "2px 2px 78px rgba(3, 47, 65, 0.8)"
   },
   pointsSublable: {
-    letterSpacing: "2.5px",
     color: "black",
     fontWeight: "400",
-    fontSize: "2.0em"
+    letterSpacing: "4px",
+    fontSize: "1.5em",
+    margin: "-15px 0 30px 0"
+  },
+  rewardsTitle: {
+    letterSpacing: "2.5px",
+    color: "#032F41",
+    fontWeight: "400",
+    fontSize: "1.4em",
+    margin: "30px 0 10px 0"
   },
   background: {
     background:
@@ -34,12 +47,21 @@ const styles = theme => ({
     backgroundPosition: "center top",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
-    position: "absolute",
+    position: "fixed",
     top: 0,
     bottom: 0,
     left: 0,
     right: 0,
-    zIndex: -1
+    zIndex: -1,
+    "& h1": {
+      fontSize: "24em",
+      background: "linear-gradient(black, transparent)",
+      "-webkit-background-clip": "text",
+      textFillColor: "transparent",
+      textAlign: "center",
+      fontWeight: 400,
+      opacity: 0.07
+    }
   }
 });
 class Dashboard extends React.Component {
@@ -47,6 +69,9 @@ class Dashboard extends React.Component {
   async componentDidMount() {}
   render() {
     const { classes } = this.props;
+    const points = 99999;
+    const steps = 99999;
+    const pointsTotal = 99999;
     return (
       <Fragment>
         <NavBar />
@@ -74,7 +99,7 @@ class Dashboard extends React.Component {
                 >
                   <Grid item>
                     <Typography className={classes.pointsLabel} variant="h1">
-                      4200
+                      {pointsTotal}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -83,7 +108,11 @@ class Dashboard extends React.Component {
                     </Typography>
                   </Grid>
                   <Grid item>
-                    <PointsWidget className={classes.pointsWidget} />
+                    <PointsWidget
+                      className={classes.pointsWidget}
+                      points={points}
+                      steps={steps}
+                    />
                   </Grid>
                 </Grid>
               </Grid>
@@ -91,7 +120,9 @@ class Dashboard extends React.Component {
             </Grid>
           </Grid>
           <Grid item>
-            <Typography variant="h4"> Reward offers</Typography>
+            <Typography className={classes.rewardsTitle} variant="h5">
+              Reward offers
+            </Typography>
             <Grid
               container
               direction="row"
@@ -99,7 +130,7 @@ class Dashboard extends React.Component {
               alignItems="flex-start"
             >
               <Grid className={classes.rewardCell} item xs={3}>
-                <RewardCell />
+                <RewardCell className={classes.rewardCell} />
               </Grid>
               <Grid className={classes.rewardCell} item xs={3}>
                 <RewardCell />
@@ -116,7 +147,9 @@ class Dashboard extends React.Component {
             </Grid>
           </Grid>
         </Grid>
-        <div className={classes.background}></div>
+        <div className={classes.background}>
+          <Typography variant="h1">{pointsTotal}</Typography>
+        </div>
       </Fragment>
     );
   }

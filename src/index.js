@@ -14,6 +14,19 @@ const theme = {
     background: {
       default: "#F1F8F9"
     }
+  },
+  buttons: {
+    primary: {
+      height: "40px!important",
+      backgroundColor: "#FFFFFF",
+      color: "#032F41",
+      fontSize: "0.4em",
+      verticalAlign: "middle",
+      textTransform: "capitalize",
+      "&:hover": {
+        backgroundColor: "rgba(255,255,255,0.9)"
+      }
+    }
   }
 };
 

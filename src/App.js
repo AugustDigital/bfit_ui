@@ -29,7 +29,7 @@ class App extends React.Component {
     next();
   };
   renderIfLoggedIn(component) {
-    const authenticated = Cookies.get("token");
+    const authenticated = Cookies.get("api_session");
     console.log("authed?" + authenticated);
     if (!authenticated) {
       console.log("redirect");
@@ -42,8 +42,6 @@ class App extends React.Component {
     return (
       <Router>
         <div>
-          {/* <div>TODO PROPER NAVBAR</div> */}
-
           <Switch>
             <Route path="/create">
               <CreateReward />
