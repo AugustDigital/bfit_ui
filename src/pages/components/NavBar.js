@@ -14,13 +14,15 @@ const styles = theme => ({
     position: "fixed",
     zIndex: 1,
     width: "100%",
-    height: "50px"
+    height: "50px",
+    zIndex: 2
   },
   overlay: {
     backgroundColor: "rgba(0,0,0,0.5)",
     width: "100vw",
     height: "100vh",
-    position: "fixed"
+    position: "fixed",
+    zIndex: 1
   },
   header: {
     textAlign: "center",
