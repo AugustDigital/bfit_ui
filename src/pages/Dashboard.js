@@ -1,23 +1,49 @@
 import React, { Fragment } from "react";
-import { withStyles, Grid, Typography } from "@material-ui/core";
+import {
+  withStyles,
+  Grid,
+  Typography,
+  GridList,
+  GridListTile
+} from "@material-ui/core";
 import NavBar from "./components/NavBar";
+import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
+import compose from "recompose/compose";
 import PointsWidget from "./components/PointsWidget";
 import RewardCell from "./components/RewardCell";
 const styles = theme => ({
-  root: {
-    paddingLeft: "10vw",
-    paddingRight: "10vw"
-  },
+  root: {},
   pointsWidget: {
-    width: "40vw"
+    width: "40vw",
+    [theme.breakpoints.down("sm")]: {
+      width: "100vw"
+    }
   },
   topSectionContainer: {
     width: "100%"
   },
+  gridListContainer: {
+    paddingLeft: "10vw",
+    paddingRight: "10vw",
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    background: "linear-gradient(to top, #F1F8F9 85%, transparent)",
+    width: "100%",
+    "& ul": {
+      width: "100%",
+      height: "100%"
+    },
+    [theme.breakpoints.down("sm")]: {
+      background: "#F1F8F9"
+    }
+  },
   rewardCell: {
-    minWidth: "20vw",
-    minHeight: "100px",
-    margin: "5px"
+    width: "23%",
+    margin: "1%",
+    [theme.breakpoints.down("sm")]: {
+      width: "100vw"
+    }
   },
   pointsLabel: {
     marginTop: "100px",
@@ -25,30 +51,41 @@ const styles = theme => ({
     letterSpacing: "4px",
     fontWeight: "300",
     fontSize: "10em",
-    textShadow: "2px 2px 78px rgba(3, 47, 65, 0.8)"
+    textShadow: "2px 2px 78px rgba(3, 47, 65, 0.8)",
+    [theme.breakpoints.down("sm")]: {
+      marginTop: "120px",
+      letterSpacing: "1px",
+      fontWeight: "500",
+      fontSize: "5em"
+    }
   },
   pointsSublable: {
     color: "black",
     fontWeight: "400",
     letterSpacing: "4px",
     fontSize: "1.5em",
-    margin: "-15px 0 30px 0"
+    margin: "-15px 0 30px 0",
+    [theme.breakpoints.down("sm")]: {
+      margin: "-10px 0 50px 0"
+    }
   },
   rewardsTitle: {
     letterSpacing: "2.5px",
     color: "#032F41",
     fontWeight: "400",
     fontSize: "1.4em",
-    margin: "30px 0 10px 0"
+    margin: "30px 0 10px 0",
+    [theme.breakpoints.down("sm")]: {
+      textAlign: "center"
+    }
   },
   background: {
-    background:
-      "linear-gradient(to bottom, transparent, #F1F8F9 75%), url('/fancy_runner_home.png')",
+    background: "url('/fancy_runner_home.png')",
     backgroundPosition: "center top",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
     position: "fixed",
-    top: 0,
+    top: "2vh",
     bottom: 0,
     left: 0,
     right: 0,
@@ -60,18 +97,60 @@ const styles = theme => ({
       textFillColor: "transparent",
       textAlign: "center",
       fontWeight: 400,
-      opacity: 0.07
+      opacity: 0.07,
+      [theme.breakpoints.down("sm")]: {
+        paddingTop: "5vh",
+        fontSize: "10em"
+      }
+    },
+    [theme.breakpoints.down("sm")]: {
+      backgroundPosition: "start top",
+      background: "url('/fancy_runner.png') ",
+      backgroundSize: "130% auto"
     }
   }
 });
+const listItems = [
+  {
+    title: "Meal-Kit for a month",
+    img: "/fancy_runner_home.png",
+    points: "5000",
+    icon: "/fancy_runner_home.png"
+  },
+  {
+    title: "Meal-Kit for a month",
+    img: "/fancy_runner_home.png",
+    points: "5000",
+    icon: "/fancy_runner_home.png"
+  },
+  {
+    title: "Meal-Kit for a month",
+    img: "/fancy_runner_home.png",
+    points: "5000",
+    icon: "/fancy_runner_home.png"
+  },
+  {
+    title: "Meal-Kit for a month",
+    img: "/fancy_runner_home.png",
+    points: "5000",
+    icon: "/fancy_runner_home.png"
+  },
+  {
+    title: "Meal-Kit for a month",
+    img: "/fancy_runner_home.png",
+    points: "5000",
+    icon: "/fancy_runner_home.png"
+  }
+];
 class Dashboard extends React.Component {
   state = {};
   async componentDidMount() {}
   render() {
-    const { classes } = this.props;
+    const { classes, width } = this.props;
     const points = 99999;
     const steps = 99999;
     const pointsTotal = 99999;
+    const smallScreen = !isWidthUp("md", width);
     return (
       <Fragment>
         <NavBar />
@@ -89,8 +168,7 @@ class Dashboard extends React.Component {
               justify="center"
               alignItems="center"
             >
-              <Grid item xs={3}></Grid>
-              <Grid item xs={6}>
+              <Grid item sm={12}>
                 <Grid
                   container
                   direction="column"
@@ -116,35 +194,27 @@ class Dashboard extends React.Component {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item xs={3}></Grid>
             </Grid>
           </Grid>
-          <Grid item>
-            <Typography className={classes.rewardsTitle} variant="h5">
-              Reward offers
-            </Typography>
-            <Grid
-              container
-              direction="row"
-              justify="flex-start"
-              alignItems="flex-start"
-            >
-              <Grid className={classes.rewardCell} item xs={3}>
-                <RewardCell className={classes.rewardCell} />
-              </Grid>
-              <Grid className={classes.rewardCell} item xs={3}>
-                <RewardCell className={classes.rewardCell} />
-              </Grid>
-              <Grid className={classes.rewardCell} item xs={3}>
-                <RewardCell className={classes.rewardCell} />
-              </Grid>
-              <Grid className={classes.rewardCell} item xs={3}>
-                <RewardCell className={classes.rewardCell} />
-              </Grid>
-              <Grid className={classes.rewardCell} item xs={3}>
-                <RewardCell className={classes.rewardCell} />
-              </Grid>
-            </Grid>
+          <Grid item className={classes.gridListContainer}>
+            <GridList cellHeight={110} cols={smallScreen ? 1 : 4}>
+              <GridListTile
+                key="Subheader"
+                cols={smallScreen ? 1 : 4}
+                style={{ height: "auto" }}
+              >
+                <Typography className={classes.rewardsTitle} variant="h5">
+                  Reward offers
+                </Typography>
+              </GridListTile>
+              {listItems.map((item, index) => (
+                <RewardCell
+                  key={index}
+                  tile={item}
+                  className={classes.rewardCell}
+                ></RewardCell>
+              ))}
+            </GridList>
           </Grid>
         </Grid>
         <div className={classes.background}>
@@ -155,4 +225,7 @@ class Dashboard extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(Dashboard);
+export default compose(
+  withStyles(styles, { name: "Dashboard", withTheme: true }),
+  withWidth()
+)(Dashboard);

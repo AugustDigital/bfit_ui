@@ -20,7 +20,7 @@ const theme = {
       height: "40px!important",
       backgroundColor: "#FFFFFF",
       color: "#032F41",
-      fontSize: "0.4em",
+      fontSize: "0.8em",
       verticalAlign: "middle",
       textTransform: "capitalize",
       "&:hover": {

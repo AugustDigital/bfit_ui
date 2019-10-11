@@ -1,47 +1,85 @@
 import React from "react";
-import { withStyles, Grid } from "@material-ui/core";
+import {
+  withStyles,
+  Grid,
+  Card,
+  CardActionArea,
+  CardMedia,
+  CardContent,
+  Typography
+} from "@material-ui/core";
 const styles = theme => ({
   root: {
     background: "white",
-    height: "100%"
+    color: "#032F41",
+    "& h2": {
+      textTransform: "uppercase",
+      fontSize: "1.1em",
+      fontWeight: "600",
+      marginBottom: 0
+    },
+    "& p": {
+      fontSize: "1.1em"
+    }
+  },
+  textSection: {
+    marginLeft: "10px",
+    width: "55%"
   },
   image: {
-    width: "100%",
-    maxWidth: "100%",
-    flexGrow: 1,
-    backgroundImage: "url('/fancy_runner.png')",
-    backgroundPosition: "center center",
-    backgroundRepeat: "no-repeat"
+    height: "80px"
   },
-  content: {
-    flexGrow: 1
-  }
+  content: {}
 });
 class RewardCell extends React.Component {
   state = {};
   async componentDidMount() {}
   render() {
-    const { classes, className } = this.props;
+    const { classes, className, tile } = this.props;
     return (
-      <Grid
-        className={className + " " + classes.root}
-        container
-        direction="column"
-        justify="flex-start"
-        alignItems="center"
-      >
-        <Grid className={classes.image} item xs={6}></Grid>
-        <Grid className={classes.content} item xs={6}>
-          <Grid container direction="row" justify="center" alignItems="center">
-            <Grid item xs={1}>
-              Image
+      <Card className={className + " " + classes.root}>
+        <CardActionArea>
+          <CardMedia
+            className={classes.image}
+            component="img"
+            alt="Contemplative Reptile"
+            height="140"
+            image={tile.img}
+            title="Contemplative Reptile"
+          />
+          <CardContent>
+            <Grid container>
+              <Grid
+                item
+                style={{
+                  width: "50px",
+                  height: "50px",
+                  backgroundImage: `url('${tile.icon}')`,
+                  backgroundPosition: "center center",
+                  backgroundSize: "cover",
+                  backgroundRepeat: "no-repeat"
+                }}
+              ></Grid>
+              <Grid item className={classes.textSection}>
+                <Grid
+                  container
+                  style={{ height: "100%" }}
+                  direction="column"
+                  justify="center"
+                  alignItems="flex-start"
+                >
+                  <Typography gutterBottom variant="h5" component="h2">
+                    {tile.title}
+                  </Typography>
+                  <Typography variant="body2" component="p">
+                    {tile.points} pts
+                  </Typography>
+                </Grid>
+              </Grid>
             </Grid>
-            <Grid item xs={11}>
-              Text
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
+          </CardContent>
+        </CardActionArea>
+      </Card>
     );
   }
 }
