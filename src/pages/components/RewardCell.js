@@ -35,9 +35,9 @@ class RewardCell extends React.Component {
   state = {};
   async componentDidMount() {}
   render() {
-    const { classes, className, tile } = this.props;
+    const { classes, className, tile, onClick } = this.props;
     return (
-      <Card className={className + " " + classes.root}>
+      <Card className={className + " " + classes.root} onClick={onClick}>
         <CardActionArea>
           <CardMedia
             className={classes.image}

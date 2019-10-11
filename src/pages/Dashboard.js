@@ -11,6 +11,7 @@ import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
 import compose from "recompose/compose";
 import PointsWidget from "./components/PointsWidget";
 import RewardCell from "./components/RewardCell";
+import { withRouter } from "react-router-dom";
 const styles = theme => ({
   root: {},
   pointsWidget: {
@@ -145,8 +146,12 @@ const listItems = [
 class Dashboard extends React.Component {
   state = {};
   async componentDidMount() {}
+  handleOnClick = id => {
+    this.props.history.push(`/reward?id=${id}`);
+  };
   render() {
     const { classes, width } = this.props;
+
     const points = 99999;
     const steps = 99999;
     const pointsTotal = 99999;
@@ -209,6 +214,9 @@ class Dashboard extends React.Component {
               </GridListTile>
               {listItems.map((item, index) => (
                 <RewardCell
+                  onClick={() => {
+                    this.handleOnClick(index); //todo update
+                  }}
                   key={index}
                   tile={item}
                   className={classes.rewardCell}
@@ -225,7 +233,9 @@ class Dashboard extends React.Component {
   }
 }
 
-export default compose(
-  withStyles(styles, { name: "Dashboard", withTheme: true }),
-  withWidth()
-)(Dashboard);
+export default withRouter(
+  compose(
+    withStyles(styles, { name: "Dashboard", withTheme: true }),
+    withWidth()
+  )(Dashboard)
+);
