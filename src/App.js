@@ -50,9 +50,12 @@ class App extends React.Component {
             </Route>
             <Route
               path="/reward"
-              component={() =>
+              render={props =>
                 this.renderIfLoggedIn(
-                  <Reward id={query.parse(window.location.search).id} />
+                  <Reward
+                    {...props}
+                    id={query.parse(window.location.search).id}
+                  />
                 )
               }
             />
@@ -62,7 +65,7 @@ class App extends React.Component {
             <Route
               exact
               path="/"
-              render={() => this.renderIfLoggedIn(<Dashboard />)}
+              render={props => this.renderIfLoggedIn(<Dashboard {...props} />)}
             />
           </Switch>
         </div>

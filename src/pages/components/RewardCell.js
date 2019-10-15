@@ -29,18 +29,33 @@ const styles = theme => ({
   image: {
     height: "80px"
   },
-  content: {}
+  largeImage: {
+    height: "210px"
+  },
+  content: {},
+  noShadow: {
+    boxShadow: "none"
+  }
 });
 class RewardCell extends React.Component {
   state = {};
   async componentDidMount() {}
   render() {
-    const { classes, className, tile, onClick } = this.props;
+    const { classes, className, tile, onClick, largeImage } = this.props;
     return (
-      <Card className={className + " " + classes.root} onClick={onClick}>
+      <Card
+        className={
+          className +
+          " " +
+          classes.root +
+          " " +
+          (largeImage ? classes.noShadow : "")
+        }
+        onClick={onClick}
+      >
         <CardActionArea>
           <CardMedia
-            className={classes.image}
+            className={largeImage ? classes.largeImage : classes.image}
             component="img"
             alt="Contemplative Reptile"
             height="140"

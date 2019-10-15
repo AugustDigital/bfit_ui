@@ -151,7 +151,6 @@ class Dashboard extends React.Component {
   };
   render() {
     const { classes, width } = this.props;
-
     const points = 99999;
     const steps = 99999;
     const pointsTotal = 99999;

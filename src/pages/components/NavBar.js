@@ -4,37 +4,43 @@ import {
   Typography,
   IconButton,
   Popper,
-  Paper
+  Paper,
+  Grid
 } from "@material-ui/core";
 import ProfileIcon from "../../res/profile_icon.svg";
 import CloseIcon from "../../res/close_icon.svg";
+import BackIcon from "../../res/back_icon.svg";
 const styles = theme => ({
   root: {
     background: "white",
     position: "fixed",
-    zIndex: 1,
     width: "100%",
     height: "50px",
-    zIndex: 2
+    zIndex: 1,
+    top: 0
   },
   overlay: {
     backgroundColor: "rgba(0,0,0,0.5)",
     width: "100vw",
     height: "100vh",
-    position: "fixed",
-    zIndex: 1
+    position: "fixed"
   },
   header: {
     textAlign: "center",
     fontWeight: "500",
     fontSize: "1.9em",
-    position: "relative",
     marginTop: "7px"
   },
   dropdownButton: {
-    position: "fixed",
-    right: "5%",
     top: 0
+  },
+  backButton: {
+    top: 0
+  },
+  backButtonPlaceHolder: {
+    width: "25px",
+    height: "25px",
+    margin: "12px"
   },
   popper: {
     marginTop: "7px",
@@ -110,6 +116,10 @@ class NavBar extends React.Component {
   onClick = e => {
     this.setState({ anchorRef: this.state.anchorRef ? null : e.currentTarget });
   };
+  handleOnBackClick = () => {
+    console.log(this.props);
+    this.props.history.push(this.props.back);
+  };
   handleArrowRef = node => {
     this.setState({
       arrowRef: node
@@ -119,7 +129,26 @@ class NavBar extends React.Component {
     const { classes } = this.props;
     return (
       <Fragment>
-        <div className={classes.root}>
+        <Grid
+          className={classes.root}
+          container
+          direction="row"
+          justify="space-between"
+          alignItems="center"
+        >
+          {this.props.back ? (
+            <IconButton
+              aria-label="back"
+              className={classes.backButton}
+              ref={this.buttonRef}
+              onClick={this.handleOnBackClick}
+            >
+              <img alt="back icon" width="25px" height="25px" src={BackIcon} />
+            </IconButton>
+          ) : (
+            <div className={classes.backButtonPlaceHolder} />
+          )}
+
           <Typography className={classes.header} variant="h5">
             BFIT
           </Typography>
@@ -136,7 +165,7 @@ class NavBar extends React.Component {
               src={this.state.anchorRef ? CloseIcon : ProfileIcon}
             />
           </IconButton>
-        </div>
+        </Grid>
         <Popper
           placement="bottom-end"
           open={this.state.anchorRef !== null}
