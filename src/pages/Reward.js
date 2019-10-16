@@ -1,9 +1,19 @@
 import React, { Fragment } from "react";
-import { withStyles, Grid, Typography, Fab } from "@material-ui/core";
+import {
+  withStyles,
+  Grid,
+  Typography,
+  Fab,
+  AppBar,
+  Tab,
+  Tabs
+} from "@material-ui/core";
 import compose from "recompose/compose";
 import { Redirect } from "react-router-dom";
 import RewardCell from "./components/RewardCell";
 import NavBar from "./components/NavBar";
+import PointList from "./components/PointList";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 const styles = theme => ({
   root: {
     margin: "0 auto 0 auto",
@@ -55,15 +65,60 @@ const styles = theme => ({
       paddingLeft: "5vw",
       paddingRight: "5vw"
     }
+  },
+  tabBar: {
+    background: "white",
+    color: "#032F41",
+    boxShadow: "none",
+    borderTop: "1px solid rgba(243,243,243,100)",
+    zIndex: 0
+  },
+  tab: {
+    width: "50%"
+  },
+  page: {
+    marginTop: "20px"
   }
 });
 class Reward extends React.Component {
-  state = {};
+  state = { value: 0 };
   async componentDidMount() {}
+  handleChange = (event, newValue) => {
+    this.setState({ value: newValue });
+  };
+  a11yProps(index) {
+    return {
+      id: `simple-tab-${index}`,
+      "aria-controls": `simple-tabpanel-${index}`
+    };
+  }
   render() {
-    console.log(this.props);
-    const { classes, id, history } = this.props;
-    console.log(history);
+    const { classes, id, history, width } = this.props;
+    const { value } = this.state;
+
+    const smallScreen = isWidthDown("sm", width);
+    const hasRedeemed = true;
+    const testItems = [
+      { points: 5000, timestamp: 1571232825 },
+      { points: 5000, timestamp: 1571232825 },
+      { points: 5000, timestamp: 1571232825 }
+    ];
+    const detailsSection = (
+      <Fragment>
+        <Typography className={classes.rewardsTitle} variant="h5">
+          Details
+        </Typography>
+        <Typography className={classes.rewardsDetails}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat. Duis aute irure dolor in
+          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+          culpa qui officia deserunt mollit anim id est laborum.
+        </Typography>
+      </Fragment>
+    );
     if (id) {
       return (
         <Fragment>
@@ -85,18 +140,49 @@ class Reward extends React.Component {
                 icon: "/fancy_runner_home.png"
               }}
             />
-            <Typography className={classes.rewardsTitle} variant="h5">
-              Details
-            </Typography>
-            <Typography className={classes.rewardsDetails}>
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum."
-            </Typography>
+            {hasRedeemed ? (
+              <Fragment>
+                <AppBar className={classes.tabBar} position="static">
+                  <Tabs
+                    value={value}
+                    onChange={this.handleChange}
+                    aria-label="simple tabs example"
+                  >
+                    <Tab
+                      className={classes.tab}
+                      label="Redeemed"
+                      {...this.a11yProps(0)}
+                    />
+                    <Tab
+                      className={classes.tab}
+                      label="Details"
+                      {...this.a11yProps(1)}
+                    />
+                  </Tabs>
+                </AppBar>
+                <div
+                  className={classes.page}
+                  hidden={value !== 0}
+                  value={value}
+                  index={0}
+                >
+                  <PointList
+                    items={testItems}
+                    forceVerticalLayout={smallScreen}
+                  />
+                </div>
+                <div
+                  className={classes.page}
+                  hidden={value !== 1}
+                  value={value}
+                  index={1}
+                >
+                  {detailsSection}
+                </div>
+              </Fragment>
+            ) : (
+              detailsSection
+            )}
           </Grid>
           <div className={classes.footer}>
             <Fab
@@ -117,6 +203,7 @@ class Reward extends React.Component {
   }
 }
 
-export default compose(withStyles(styles, { name: "Reward", withTheme: true }))(
-  Reward
-);
+export default compose(
+  withStyles(styles, { name: "Reward", withTheme: true }),
+  withWidth()
+)(Reward);

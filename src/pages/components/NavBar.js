@@ -10,20 +10,23 @@ import {
 import ProfileIcon from "../../res/profile_icon.svg";
 import CloseIcon from "../../res/close_icon.svg";
 import BackIcon from "../../res/back_icon.svg";
+import PointList from "./PointList";
 const styles = theme => ({
   root: {
     background: "white",
     position: "fixed",
     width: "100%",
     height: "50px",
-    zIndex: 1,
-    top: 0
+    zIndex: 2,
+    top: 0,
+    padding: "0 5vw 0 5vw"
   },
   overlay: {
     backgroundColor: "rgba(0,0,0,0.5)",
     width: "100vw",
     height: "100vh",
-    position: "fixed"
+    position: "fixed",
+    zIndex: 1
   },
   header: {
     textAlign: "center",
@@ -45,6 +48,10 @@ const styles = theme => ({
   popper: {
     marginTop: "7px",
     zIndex: 1,
+    [theme.breakpoints.down("sm")]: {
+      transform: "none!important",
+      marginTop: "50px"
+    },
     '&[x-placement*="bottom"] $arrow': {
       top: 0,
       left: 0,
@@ -54,6 +61,10 @@ const styles = theme => ({
       "&::before": {
         borderWidth: "0 1em 1em 1em",
         borderColor: `transparent transparent ${theme.palette.common.white} transparent`
+      },
+      [theme.breakpoints.down("sm")]: {
+        display: "none!important",
+        height: "0!important"
       }
     },
     '&[x-placement*="top"] $arrow': {
@@ -103,8 +114,16 @@ const styles = theme => ({
     }
   },
   dropDownContent: {
-    minWidth: "10vh",
-    minHeight: "10vh"
+    background: "#F1F8F9",
+    width: "250px",
+    maxHeight: "60vh",
+    padding: "3vh",
+    overflowY: "scroll",
+    [theme.breakpoints.down("sm")]: {
+      width: "100vw",
+      maxHeight: "100vh",
+      height: "100vh"
+    }
   }
 });
 class NavBar extends React.Component {
@@ -127,6 +146,14 @@ class NavBar extends React.Component {
   };
   render() {
     const { classes } = this.props;
+    const testItems = [
+      { points: 5000, timestamp: 1571232825000 },
+      { points: 5000, timestamp: 1571232825000 },
+      { points: 5000, timestamp: 1571232825000 },
+      { points: 5000, timestamp: 1571232825000 },
+      { points: 5000, timestamp: 1571232825000 },
+      { points: 5000, timestamp: 1571232825000 }
+    ];
     return (
       <Fragment>
         <Grid
@@ -187,7 +214,9 @@ class NavBar extends React.Component {
           }}
         >
           <span className={classes.arrow} ref={this.handleArrowRef} />
-          <Paper className={classes.dropDownContent}>Text</Paper>
+          <Paper className={classes.dropDownContent}>
+            <PointList items={testItems} forceVerticalLayout={true} />
+          </Paper>
         </Popper>
         {this.state.anchorRef !== null ? (
           <div onClick={this.onClick} className={classes.overlay} />
