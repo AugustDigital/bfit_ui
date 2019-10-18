@@ -8,8 +8,16 @@ const styles = theme => ({
     }
   },
   redemptionCircle: {
-    width: "150px",
-    height: "150px",
+    minWidth: "140px",
+    minHeight: "140px",
+    width: "auto",
+    height: "auto",
+    borderRadius: "80px",
+    background: "white"
+  },
+  redemptionCircleSmall: {
+    width: "120px",
+    height: "120px",
     borderRadius: "80px",
     background: "white"
   },
@@ -34,12 +42,26 @@ class PointList extends React.Component {
     return (
       <Grid
         key={index}
-        className={classes.redemptionCircle}
+        className={
+          item.pointsType === 1
+            ? classes.redemptionCircle
+            : classes.redemptionCircleSmall
+        }
         container
         direction="column"
         justify="center"
         alignItems="center"
       >
+        {item.pointsType === 1 ? (
+          <div>
+            <img
+              alt="reward vendor logo"
+              width="30px"
+              height="30px"
+              src="/fancy_runner_home.png"
+            />
+          </div>
+        ) : null}
         <Typography>{item.points} pts</Typography>
         <Typography className={classes.date}>
           {moment.unix(item.timestamp).format("MMM d, YYYY")}
@@ -59,7 +81,7 @@ class PointList extends React.Component {
     }, []);
   };
   render() {
-    const { classes, items, forceVerticalLayout } = this.props;
+    const { classes, items, forceVerticalLayout, className } = this.props;
     let itemViews = items.map((item, index) =>
       this.composeItem(classes, item, index)
     );
@@ -70,7 +92,7 @@ class PointList extends React.Component {
     }
     return (
       <Grid
-        className={classes.root}
+        className={classes.root + " " + className}
         container
         direction={forceVerticalLayout ? "column" : "row"}
         justify="center"

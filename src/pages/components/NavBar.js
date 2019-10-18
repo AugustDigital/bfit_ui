@@ -5,7 +5,10 @@ import {
   IconButton,
   Popper,
   Paper,
-  Grid
+  Grid,
+  MenuItem,
+  Select,
+  Input
 } from "@material-ui/core";
 import ProfileIcon from "../../res/profile_icon.svg";
 import CloseIcon from "../../res/close_icon.svg";
@@ -19,7 +22,7 @@ const styles = theme => ({
     height: "50px",
     zIndex: 2,
     top: 0,
-    padding: "0 5vw 0 5vw"
+    padding: "0 7vw 0 7vw"
   },
   overlay: {
     backgroundColor: "rgba(0,0,0,0.5)",
@@ -124,12 +127,36 @@ const styles = theme => ({
       maxHeight: "100vh",
       height: "100vh"
     }
+  },
+  nestedDropDown: {},
+  nestedDropSelect: {
+    borderColor: "#032F41",
+    borderStyle: "solid",
+    borderRadius: "50px",
+    borderWidth: "1px",
+    background: "white",
+    textAlign: "center",
+    color: "#032F41",
+    width: "100%",
+    paddingTop: "5px",
+    paddingBottom: "5px",
+    "&:before": {
+      borderBottom: "none!important"
+    },
+    "&:after": {
+      borderBottom: "none!important"
+    }
+  },
+  pointList: {
+    paddingTop: "25px"
   }
 });
 class NavBar extends React.Component {
   state = {
     open: false,
-    anchorRef: null
+    anchorRef: null,
+    values: { age: "", name: "hai" },
+    pointsType: 0
   };
   async componentDidMount() {}
   onClick = e => {
@@ -144,15 +171,26 @@ class NavBar extends React.Component {
       arrowRef: node
     });
   };
+  handleLableRef = node => {
+    this.setState({
+      inputLabelRef: node
+    });
+  };
+  handleChange = event => {
+    this.setState({
+      pointsType: event.target.value
+    });
+  };
   render() {
     const { classes } = this.props;
+    const { pointsType } = this.state;
     const testItems = [
-      { points: 5000, timestamp: 1571232825000 },
-      { points: 5000, timestamp: 1571232825000 },
-      { points: 5000, timestamp: 1571232825000 },
-      { points: 5000, timestamp: 1571232825000 },
-      { points: 5000, timestamp: 1571232825000 },
-      { points: 5000, timestamp: 1571232825000 }
+      { points: 5000, pointsType, timestamp: 1571232825 },
+      { points: 5000, pointsType, timestamp: 1571232825 },
+      { points: 5000, pointsType, timestamp: 1571232825 },
+      { points: 5000, pointsType, timestamp: 1571232825 },
+      { points: 5000, pointsType, timestamp: 1571232825 },
+      { points: 5000, pointsType, timestamp: 1571232825 }
     ];
     return (
       <Fragment>
@@ -215,7 +253,26 @@ class NavBar extends React.Component {
         >
           <span className={classes.arrow} ref={this.handleArrowRef} />
           <Paper className={classes.dropDownContent}>
-            <PointList items={testItems} forceVerticalLayout={true} />
+            <Select
+              className={classes.nestedDropSelect}
+              value={pointsType}
+              onChange={this.handleChange}
+              input={
+                <Input
+                  classes={{
+                    underline: styles.underline
+                  }}
+                />
+              }
+            >
+              <MenuItem value={0}>Points Earned</MenuItem>
+              <MenuItem value={1}>Points Redeemed</MenuItem>
+            </Select>
+            <PointList
+              className={classes.pointList}
+              items={testItems}
+              forceVerticalLayout={true}
+            />
           </Paper>
         </Popper>
         {this.state.anchorRef !== null ? (
