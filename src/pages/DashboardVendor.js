@@ -102,6 +102,22 @@ const listItems = [
     icon: "/fancy_runner_home.png"
   }
 ];
+const expiredListItems = [
+  {
+    title: "Meal-Kit for a month",
+    img: "/fancy_runner_home.png",
+    points: "5000",
+    icon: "/fancy_runner_home.png",
+    expired: true
+  },
+  {
+    title: "Meal-Kit for a month",
+    img: "/fancy_runner_home.png",
+    points: "5000",
+    icon: "/fancy_runner_home.png",
+    expired: true
+  }
+];
 class DashboardUser extends React.Component {
   state = { pointsConverted: false, missingUserRole: true, value: 0 };
   async componentDidMount() {}
@@ -114,6 +130,9 @@ class DashboardUser extends React.Component {
       "aria-controls": `simple-tabpanel-${index}`
     };
   }
+  handleOnClick = id => {
+    this.props.history.push(`/reward?id=${id}&admin=true`);
+  };
   render() {
     const { classes, width } = this.props;
     const { value } = this.state;
@@ -187,7 +206,20 @@ class DashboardUser extends React.Component {
               value={value}
               index={1}
             >
-              cells expired
+              <GridList cellHeight={110} cols={smallScreen ? 1 : 4}>
+                {expiredListItems.map((item, index) => {
+                  return (
+                    <RewardCell
+                      onClick={() => {
+                        this.handleOnClick(index); //todo update
+                      }}
+                      key={index}
+                      tile={item}
+                      className={classes.rewardCell}
+                    ></RewardCell>
+                  );
+                })}
+              </GridList>
             </div>
           </Fragment>
         </Grid>

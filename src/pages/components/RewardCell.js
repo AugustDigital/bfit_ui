@@ -35,6 +35,10 @@ const styles = theme => ({
   content: {},
   noShadow: {
     boxShadow: "none"
+  },
+  expired: {
+    pointerEvents: "none",
+    opacity: "0.4"
   }
 });
 class RewardCell extends React.Component {
@@ -49,7 +53,9 @@ class RewardCell extends React.Component {
           " " +
           classes.root +
           " " +
-          (largeImage ? classes.noShadow : "")
+          (largeImage ? classes.noShadow : "") +
+          " " +
+          (tile.expired ? classes.expired : "")
         }
         onClick={onClick}
       >

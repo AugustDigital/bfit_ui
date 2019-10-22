@@ -78,6 +78,9 @@ const styles = theme => ({
   },
   page: {
     marginTop: "20px"
+  },
+  indicator: {
+    backgroundColor: "#032F41"
   }
 });
 class Reward extends React.Component {
@@ -144,10 +147,12 @@ class Reward extends React.Component {
               <Fragment>
                 <AppBar className={classes.tabBar} position="static">
                   <Tabs
-                    inkBarStyle={{ background: "#032F41" }}
                     value={value}
                     onChange={this.handleChange}
                     aria-label="simple tabs example"
+                    classes={{
+                      indicator: classes.indicator
+                    }}
                   >
                     <Tab
                       className={classes.tab}

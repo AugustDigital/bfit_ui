@@ -44,7 +44,7 @@ class PointsWidget extends React.Component {
         composedClass += " " + classes.rightBorder;
       }
       return (
-        <Grid item className={composedClass}>
+        <Grid item className={composedClass} key={index}>
           <Typography variant="h5">{item.number}</Typography>
           <Typography variant="h6">{item.text}</Typography>
         </Grid>
