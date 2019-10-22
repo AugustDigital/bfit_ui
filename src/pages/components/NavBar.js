@@ -149,6 +149,9 @@ const styles = theme => ({
   },
   pointList: {
     paddingTop: "25px"
+  },
+  nestedDropSelectInput: {
+    backgroundColor: "transparent!important"
   }
 });
 class NavBar extends React.Component {
@@ -260,6 +263,7 @@ class NavBar extends React.Component {
               input={
                 <Input
                   classes={{
+                    input: classes.nestedDropSelectInput,
                     underline: styles.underline
                   }}
                 />

@@ -21,7 +21,7 @@ const styles = theme => ({
     }
   },
   wideButton: {
-    minWidth: "50%!important"
+    minWidth: "280px!important"
   },
   rightBorder: {
     borderRight: "0.5px solid rgba(255,255,255, 0.1)"
@@ -31,7 +31,25 @@ class PointsWidget extends React.Component {
   state = {};
   async componentDidMount() {}
   render() {
-    const { classes, className, points, steps } = this.props;
+    const {
+      classes,
+      className,
+      onPointsClick,
+      buttonLabel,
+      contentItems
+    } = this.props;
+    const textContent = contentItems.map((item, index) => {
+      let composedClass = classes.dataItem;
+      if (index !== contentItems.length - 1) {
+        composedClass += " " + classes.rightBorder;
+      }
+      return (
+        <Grid item className={composedClass}>
+          <Typography variant="h5">{item.number}</Typography>
+          <Typography variant="h6">{item.text}</Typography>
+        </Grid>
+      );
+    });
     return (
       <Grid
         className={className + " " + classes.root}
@@ -47,14 +65,7 @@ class PointsWidget extends React.Component {
             justify="space-around"
             alignItems="center"
           >
-            <Grid item className={classes.dataItem + " " + classes.rightBorder}>
-              <Typography variant="h5">{steps}</Typography>
-              <Typography variant="h6">Steps Today</Typography>
-            </Grid>
-            <Grid item className={classes.dataItem}>
-              <Typography variant="h5">{points}</Typography>
-              <Typography variant="h6">Tokens Earned</Typography>
-            </Grid>
+            {textContent}
           </Grid>
         </Grid>
         <Fab
@@ -63,8 +74,9 @@ class PointsWidget extends React.Component {
           size="small"
           color="primary"
           aria-label="add"
+          onClick={onPointsClick}
         >
-          Convert tokens to points
+          {buttonLabel}
         </Fab>
       </Grid>
     );

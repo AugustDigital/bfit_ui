@@ -3,7 +3,6 @@ import {
   withStyles,
   Grid,
   Typography,
-  Fab,
   AppBar,
   Tab,
   Tabs
@@ -14,6 +13,7 @@ import RewardCell from "./components/RewardCell";
 import NavBar from "./components/NavBar";
 import PointList from "./components/PointList";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
+import Footer from "./components/Footer";
 const styles = theme => ({
   root: {
     margin: "0 auto 0 auto",
@@ -144,6 +144,7 @@ class Reward extends React.Component {
               <Fragment>
                 <AppBar className={classes.tabBar} position="static">
                   <Tabs
+                    inkBarStyle={{ background: "#032F41" }}
                     value={value}
                     onChange={this.handleChange}
                     aria-label="simple tabs example"
@@ -184,17 +185,7 @@ class Reward extends React.Component {
               detailsSection
             )}
           </Grid>
-          <div className={classes.footer}>
-            <Fab
-              className={classes.wideButton}
-              variant="extended"
-              size="small"
-              color="primary"
-              aria-label="add"
-            >
-              Redeem Reward
-            </Fab>
-          </div>
+          <Footer />
         </Fragment>
       );
     } else {
