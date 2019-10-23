@@ -75,31 +75,36 @@ const listItems = [
     title: "Meal-Kit for a month",
     img: "/fancy_runner_home.png",
     points: "5000",
-    icon: "/fancy_runner_home.png"
+    icon: "/fancy_runner_home.png",
+    endTime: 1573741250
   },
   {
     title: "Meal-Kit for a month",
     img: "/fancy_runner_home.png",
     points: "5000",
-    icon: "/fancy_runner_home.png"
+    icon: "/fancy_runner_home.png",
+    endTime: 1573741250
   },
   {
     title: "Meal-Kit for a month",
     img: "/fancy_runner_home.png",
     points: "5000",
-    icon: "/fancy_runner_home.png"
+    icon: "/fancy_runner_home.png",
+    endTime: 1573741250
   },
   {
     title: "Meal-Kit for a month",
     img: "/fancy_runner_home.png",
     points: "5000",
-    icon: "/fancy_runner_home.png"
+    icon: "/fancy_runner_home.png",
+    endTime: 1573741250
   },
   {
     title: "Meal-Kit for a month",
     img: "/fancy_runner_home.png",
     points: "5000",
-    icon: "/fancy_runner_home.png"
+    icon: "/fancy_runner_home.png",
+    endTime: 1573741250
   }
 ];
 const expiredListItems = [
@@ -108,14 +113,14 @@ const expiredListItems = [
     img: "/fancy_runner_home.png",
     points: "5000",
     icon: "/fancy_runner_home.png",
-    expired: true
+    endTime: 1571840450
   },
   {
     title: "Meal-Kit for a month",
     img: "/fancy_runner_home.png",
     points: "5000",
     icon: "/fancy_runner_home.png",
-    expired: true
+    endTime: 1571840450
   }
 ];
 class DashboardUser extends React.Component {
@@ -132,6 +137,9 @@ class DashboardUser extends React.Component {
   }
   handleOnClick = id => {
     this.props.history.push(`/reward?id=${id}&admin=true`);
+  };
+  onPointsClick = () => {
+    this.props.history.push(`/createUpdateReward?id=${this.props.id}`);
   };
   render() {
     const { classes, width } = this.props;

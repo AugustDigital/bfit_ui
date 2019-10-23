@@ -45,9 +45,18 @@ class App extends React.Component {
       <Router>
         <div>
           <Switch>
-            <Route path="/create">
-              <CreateReward />
-            </Route>
+            <Route
+              path="/createUpdateReward"
+              render={props =>
+                this.renderIfLoggedIn(
+                  <CreateReward
+                    {...props}
+                    id={query.parse(window.location.search).id}
+                    admin={query.parse(window.location.search).admin}
+                  />
+                )
+              }
+            />
             <Route
               path="/reward"
               render={props =>
@@ -55,6 +64,7 @@ class App extends React.Component {
                   <Reward
                     {...props}
                     id={query.parse(window.location.search).id}
+                    admin={query.parse(window.location.search).admin}
                   />
                 )
               }

@@ -89,6 +89,9 @@ class Reward extends React.Component {
   handleChange = (event, newValue) => {
     this.setState({ value: newValue });
   };
+  onEditClicked = () => {
+    this.props.history.push(`/createUpdateReward`);
+  };
   a11yProps(index) {
     return {
       id: `simple-tab-${index}`,
@@ -96,9 +99,8 @@ class Reward extends React.Component {
     };
   }
   render() {
-    const { classes, id, history, width } = this.props;
+    const { classes, id, history, width, admin } = this.props;
     const { value } = this.state;
-
     const smallScreen = isWidthDown("sm", width);
     const hasRedeemed = true;
     const testItems = [
@@ -125,7 +127,11 @@ class Reward extends React.Component {
     if (id) {
       return (
         <Fragment>
-          <NavBar history={history} back="/" />
+          <NavBar
+            history={history}
+            back="/"
+            onEditClick={admin ? this.onEditClicked : null}
+          />
           <Grid
             className={classes.root}
             container
@@ -140,7 +146,8 @@ class Reward extends React.Component {
                 title: "Meal-Kit for a month",
                 img: "/fancy_runner_home.png",
                 points: "5000",
-                icon: "/fancy_runner_home.png"
+                icon: "/fancy_runner_home.png",
+                endTime: 1573741250
               }}
             />
             {hasRedeemed ? (
@@ -190,7 +197,7 @@ class Reward extends React.Component {
               detailsSection
             )}
           </Grid>
-          <Footer />
+          {admin ? null : <Footer />}
         </Fragment>
       );
     } else {

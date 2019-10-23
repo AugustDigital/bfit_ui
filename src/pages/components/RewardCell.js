@@ -1,4 +1,6 @@
 import React from "react";
+import { timeLeftFormat } from "../../utils";
+import moment from "moment";
 import {
   withStyles,
   Grid,
@@ -12,6 +14,7 @@ const styles = theme => ({
   root: {
     background: "white",
     color: "#032F41",
+    borderRadius: "2px",
     "& h2": {
       textTransform: "uppercase",
       fontSize: "1.1em",
@@ -38,7 +41,21 @@ const styles = theme => ({
   },
   expired: {
     pointerEvents: "none",
-    opacity: "0.4"
+    opacity: "0.65"
+  },
+  badge: {
+    width: "auto",
+    height: "auto",
+    color: "white",
+    padding: "5px 10px 5px 10px",
+    backgroundColor: "#032F41",
+    position: "absolute"
+  },
+  badgeTop: {
+    top: 0
+  },
+  badgeBottom: {
+    transform: "translateY(-100%)"
   }
 });
 class RewardCell extends React.Component {
@@ -46,6 +63,7 @@ class RewardCell extends React.Component {
   async componentDidMount() {}
   render() {
     const { classes, className, tile, onClick, largeImage } = this.props;
+    const expired = moment.unix(tile.endTime).diff(moment()) < 0;
     return (
       <Card
         className={
@@ -55,7 +73,7 @@ class RewardCell extends React.Component {
           " " +
           (largeImage ? classes.noShadow : "") +
           " " +
-          (tile.expired ? classes.expired : "")
+          (expired ? classes.expired : "")
         }
         onClick={onClick}
       >
@@ -63,11 +81,21 @@ class RewardCell extends React.Component {
           <CardMedia
             className={largeImage ? classes.largeImage : classes.image}
             component="img"
-            alt="Contemplative Reptile"
+            alt="card image"
             height="140"
             image={tile.img}
-            title="Contemplative Reptile"
-          />
+          ></CardMedia>
+          <div
+            className={
+              classes.badge +
+              " " +
+              (largeImage ? classes.badgeBottom : classes.badgeTop)
+            }
+          >
+            {moment.unix(tile.endTime).diff(moment()) < 0
+              ? "Expired"
+              : timeLeftFormat(tile.endTime) + " left"}
+          </div>
           <CardContent>
             <Grid container>
               <Grid

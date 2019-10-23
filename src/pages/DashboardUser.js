@@ -134,31 +134,36 @@ const listItems = [
     title: "Meal-Kit for a month",
     img: "/fancy_runner_home.png",
     points: "5000",
-    icon: "/fancy_runner_home.png"
+    icon: "/fancy_runner_home.png",
+    endTime: 1573741250
   },
   {
     title: "Meal-Kit for a month",
     img: "/fancy_runner_home.png",
     points: "5000",
-    icon: "/fancy_runner_home.png"
+    icon: "/fancy_runner_home.png",
+    endTime: 1573741250
   },
   {
     title: "Meal-Kit for a month",
     img: "/fancy_runner_home.png",
     points: "5000",
-    icon: "/fancy_runner_home.png"
+    icon: "/fancy_runner_home.png",
+    endTime: 1573741250
   },
   {
     title: "Meal-Kit for a month",
     img: "/fancy_runner_home.png",
     points: "5000",
-    icon: "/fancy_runner_home.png"
+    icon: "/fancy_runner_home.png",
+    endTime: 1573741250
   },
   {
     title: "Meal-Kit for a month",
     img: "/fancy_runner_home.png",
     points: "5000",
-    icon: "/fancy_runner_home.png"
+    icon: "/fancy_runner_home.png",
+    endTime: 1573741250
   }
 ];
 class DashboardUser extends React.Component {

@@ -13,6 +13,7 @@ import {
 import ProfileIcon from "../../res/profile_icon.svg";
 import CloseIcon from "../../res/close_icon.svg";
 import BackIcon from "../../res/back_icon.svg";
+import EditIcon from "../../res/edit_icon.svg";
 import PointList from "./PointList";
 const styles = theme => ({
   root: {
@@ -185,7 +186,7 @@ class NavBar extends React.Component {
     });
   };
   render() {
-    const { classes } = this.props;
+    const { classes, onEditClick } = this.props;
     const { pointsType } = this.state;
     const testItems = [
       { points: 5000, pointsType, timestamp: 1571232825 },
@@ -220,19 +221,29 @@ class NavBar extends React.Component {
           <Typography className={classes.header} variant="h5">
             BFIT
           </Typography>
-          <IconButton
-            aria-label="delete"
-            className={classes.dropdownButton}
-            ref={this.buttonRef}
-            onClick={this.onClick}
-          >
-            <img
-              alt="dropdown icon"
-              width="25px"
-              height="25px"
-              src={this.state.anchorRef ? CloseIcon : ProfileIcon}
-            />
-          </IconButton>
+          {onEditClick ? (
+            <IconButton
+              aria-label="delete"
+              className={classes.dropdownButton}
+              onClick={onEditClick}
+            >
+              <img alt="edit icon" width="25px" height="25px" src={EditIcon} />
+            </IconButton>
+          ) : (
+            <IconButton
+              aria-label="delete"
+              className={classes.dropdownButton}
+              ref={this.buttonRef}
+              onClick={this.onClick}
+            >
+              <img
+                alt="dropdown icon"
+                width="25px"
+                height="25px"
+                src={this.state.anchorRef ? CloseIcon : ProfileIcon}
+              />
+            </IconButton>
+          )}
         </Grid>
         <Popper
           placement="bottom-end"

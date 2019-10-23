@@ -1,6 +1,6 @@
 import React from "react";
 import { withStyles, Grid, Typography } from "@material-ui/core";
-import moment from "moment";
+import { shortDateFormat, insertIntoArray } from "../../utils";
 const styles = theme => ({
   root: {
     [theme.breakpoints.down("sm")]: {
@@ -64,29 +64,18 @@ class PointList extends React.Component {
         ) : null}
         <Typography>{item.points} pts</Typography>
         <Typography className={classes.date}>
-          {moment.unix(item.timestamp).format("MMM d, YYYY")}
+          {shortDateFormat(item.timestamp)}
         </Typography>
       </Grid>
     );
   }
-  insertIntoArray = (arr, valueFunc) => {
-    return arr.reduce((result, element, index, array) => {
-      result.push(element);
-
-      if (index < array.length - 1) {
-        result.push(valueFunc(index));
-      }
-
-      return result;
-    }, []);
-  };
   render() {
     const { classes, items, forceVerticalLayout, className } = this.props;
     let itemViews = items.map((item, index) =>
       this.composeItem(classes, item, index)
     );
     if (forceVerticalLayout) {
-      itemViews = this.insertIntoArray(itemViews, key => (
+      itemViews = insertIntoArray(itemViews, key => (
         <div key={items.length + key} className={classes.line}></div>
       ));
     }
