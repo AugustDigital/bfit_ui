@@ -9,7 +9,7 @@ const styles = theme => ({
     backgroundPosition: "center center",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
-    "& button": theme.buttons.primary
+    "& button": theme.buttons.secondary
   },
   roleDialogTint: {
     position: "absolute",
@@ -29,9 +29,61 @@ const styles = theme => ({
   },
   roleButton: {
     minWidth: "250px!important",
-    marginBottom: "15px"
+    marginBottom: "15px",
+    textTransform: "uppercase!important"
+  },
+  roleWrapper: {
+    backgroundColor: "#F1F8F9",
+    maxWidth: "360px",
+    margin: "5px",
+    [theme.breakpoints.down("sm")]: {
+      maxWidth: "none",
+      minWidth: "360px"
+    }
+  },
+  roleContainer: {
+    backgroundColor: "#F1F8F9",
+    padding: "20px",
+    "& h5": {
+      fontSize: "1.2em",
+      fontWeight: "600",
+      marginBottom: "10px"
+    },
+    "& h6": {
+      fontSize: "1.2em",
+      fontWeight: "400",
+      marginBottom: "15px",
+      textAlign: "center"
+    }
   }
 });
+class RoleCell extends React.Component {
+  render() {
+    const { classes, onRoleClick, title, description, buttonText } = this.props;
+    return (
+      <Grid
+        className={classes.roleContainer}
+        container
+        direction="column"
+        justify="center"
+        alignItems="center"
+      >
+        <Typography variant="h5">{title}</Typography>
+        <Typography variant="h6">{description}</Typography>
+        <Fab
+          className={classes.roleButton}
+          variant="extended"
+          size="small"
+          color="primary"
+          aria-label="add"
+          onClick={onRoleClick}
+        >
+          {buttonText}
+        </Fab>
+      </Grid>
+    );
+  }
+}
 class RoleSelection extends React.Component {
   state = {};
   async componentDidMount() {}
@@ -57,30 +109,33 @@ class RoleSelection extends React.Component {
               <Typography variant="h3">
                 Which role are you singning up for?
               </Typography>
-              <Fab
-                className={classes.roleButton}
-                variant="extended"
-                size="small"
-                color="primary"
-                aria-label="add"
-                onClick={() => {
-                  onRoleClick(0);
-                }}
+              <Grid
+                container
+                direction="row"
+                justify="center"
+                alignItems="center"
               >
-                BFit User
-              </Fab>
-              <Fab
-                className={classes.roleButton}
-                variant="extended"
-                size="small"
-                color="primary"
-                aria-label="add"
-                onClick={() => {
-                  onRoleClick(1);
-                }}
-              >
-                Vendor
-              </Fab>
+                <Grid item sm={6} className={classes.roleWrapper}>
+                  <RoleCell
+                    classes={classes}
+                    onRoleClick={() => onRoleClick(0)}
+                    title="BFITTER"
+                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt."
+                    buttonText="I want to be a bfitter"
+                  />
+                </Grid>
+
+                <Grid item sm={6} className={classes.roleWrapper}>
+                  <RoleCell
+                    classes={classes}
+                    onRoleClick={() => onRoleClick(1)}
+                    title="VENDOR"
+                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt."
+                    buttonText="I want to be a vendor"
+                  />
+                </Grid>
+                <a href="http://localhost:5000/user">load</a>
+              </Grid>
             </Grid>
           </div>
         </div>

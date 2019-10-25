@@ -179,10 +179,11 @@ class DashboardUser extends React.Component {
     this.setState({ pointsConverted: false });
   };
   handleRoleDialogClose = () => {
-    this.setState({ missingUserRole: false });
+    this.setState({ user: this.state.user });
   };
-  onRoleClick = roleType => {
-    //todo make api call
+  onRoleClick = async roleType => {
+    await this.props.api.post("/setRole", { roleType: roleType });
+    this.state.user.roleType = roleType;
     if (roleType === 1) {
       //vendor
       this.props.history.push(`/?admin=true`);
@@ -193,8 +194,8 @@ class DashboardUser extends React.Component {
     }
   };
   render() {
-    const { classes, width } = this.props;
-    const { pointsConverted, missingUserRole } = this.state;
+    const { classes, width, user } = this.props;
+    const { pointsConverted } = this.state;
     const points = 99999;
     const steps = 99999;
     const pointsTotal = 99999;
@@ -301,7 +302,7 @@ class DashboardUser extends React.Component {
           </Grid>
         </CommonDialog>
         <RoleSelection
-          open={missingUserRole}
+          open={typeof user.roleType == "undefined"}
           onClose={this.handleRoleDialogClose}
           onRoleClick={this.onRoleClick}
         />

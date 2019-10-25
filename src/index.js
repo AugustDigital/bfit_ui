@@ -26,6 +26,17 @@ const theme = {
       "&:hover": {
         backgroundColor: "rgba(255,255,255,0.9)"
       }
+    },
+    secondary: {
+      height: "40px!important",
+      backgroundColor: "#032F41",
+      color: "white",
+      fontSize: "0.8em",
+      verticalAlign: "middle",
+      textTransform: "capitalize",
+      "&:hover": {
+        backgroundColor: "rgba(3,47,65,0.9)"
+      }
     }
   }
 };
