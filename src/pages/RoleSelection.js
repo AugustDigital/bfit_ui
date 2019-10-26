@@ -134,7 +134,6 @@ class RoleSelection extends React.Component {
                     buttonText="I want to be a vendor"
                   />
                 </Grid>
-                <a href="http://localhost:5000/user">load</a>
               </Grid>
             </Grid>
           </div>

@@ -23,8 +23,10 @@ const styles = theme => ({
     margin: "-20px 0 0 -20px "
   }
 });
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+console.log(process.env.REACT_APP_API_URL);
 const instance = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: API_URL,
   timeout: 1000,
   withCredentials: true
 });
@@ -42,9 +44,6 @@ class App extends React.Component {
     }
   }
   renderIfLoggedIn(component, user) {
-    //const resp = await fetch("http://localhost:5000/user");
-    //const json = await resp.json();
-
     if (user) {
       console.log("authed?" + user.id);
       return component;

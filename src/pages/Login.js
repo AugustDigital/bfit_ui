@@ -103,27 +103,15 @@ const styles = theme => ({
     }
   }
 });
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 class Login extends React.Component {
   state = {};
-  async componentDidMount() {
-    const resp = await fetch("http://localhost:5000/");
-    const json = await resp.json();
-    this.setState({ data: json.data });
-    console.log(json);
-  }
-  async login() {
-    alert("!");
-    const resp = await fetch("http://localhost:5000/auth/google");
-    const json = await resp.json();
-    this.setState({ data: json.data });
-    console.log(json);
-  }
+  async componentDidMount() {}
   render() {
     const { classes, width } = this.props;
     console.log(classes);
     const smallScreen = !isWidthUp("sm", width);
     console.log(smallScreen);
-    //const { data } = this.state;
     return (
       <Grid
         className={classes.root}
@@ -165,9 +153,7 @@ class Login extends React.Component {
                     className={classes.signInButton}
                   >
                     <img alt="google logo" src={GoogleIcon} />
-                    <a href="http://localhost:5000/auth/google">
-                      Sign in with Google
-                    </a>
+                    <a href={`${API_URL}/auth/google`}>Sign in with Google</a>
                   </Fab>
                 </Grid>
               </Grid>
