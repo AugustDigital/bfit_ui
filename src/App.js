@@ -45,7 +45,7 @@ class App extends React.Component {
   }
   renderIfLoggedIn(component, user) {
     if (user) {
-      console.log("authed?" + user.id);
+      console.log("authed?" + user.googleId);
       return component;
     } else {
       console.log("redirect");
