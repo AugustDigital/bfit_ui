@@ -21,7 +21,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start_prod": "REACT_APP_API_URL=http://dstg.getdispatch.co/api npm start",
     "build": "react-scripts build",
+    "build_prod": "REACT_APP_API_URL=http://bfit.getdispatch.co/api npm run-script build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

@@ -172,18 +172,20 @@ class DashboardUser extends React.Component {
   handleOnClick = id => {
     this.props.history.push(`/reward?id=${id}`);
   };
-  onPointsClick = () => {
+  onPointsClick = async () => {
+    const resp = await this.props.api.get("/getSteps");
+    console.log(resp);
     this.setState({ pointsConverted: true });
   };
   handlePointsDialogClose = () => {
     this.setState({ pointsConverted: false });
   };
   handleRoleDialogClose = () => {
-    this.setState({ user: this.state.user });
+    this.setState({ user: this.props.user });
   };
   onRoleClick = async roleType => {
     await this.props.api.post("/setRole", { roleType: roleType });
-    this.state.user.roleType = roleType;
+    this.props.user.roleType = roleType;
     if (roleType === 1) {
       //vendor
       this.props.history.push(`/?admin=true`);
