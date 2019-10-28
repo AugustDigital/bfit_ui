@@ -173,9 +173,14 @@ class DashboardUser extends React.Component {
     this.props.history.push(`/reward?id=${id}`);
   };
   onPointsClick = async () => {
-    const resp = await this.props.api.get("/getSteps");
+    const resp = await this.props.api.get("/convertToPoints");
     console.log(resp);
-    this.setState({ pointsConverted: true });
+    if (resp.data.error) {
+      alert("Server Error!");
+    } else {
+      this.props.user.steps = resp.data.data.steps;
+      this.setState({ pointsConverted: true });
+    }
   };
   handlePointsDialogClose = () => {
     this.setState({ pointsConverted: false });
@@ -198,9 +203,12 @@ class DashboardUser extends React.Component {
   render() {
     const { classes, width, user } = this.props;
     const { pointsConverted } = this.state;
-    const points = 99999;
-    const steps = 99999;
-    const pointsTotal = 99999;
+    const { steps, points } = user.steps[user.steps.length - 1];
+    let pointsTotal = 0;
+    user.steps.forEach(stepData => {
+      pointsTotal += stepData.points; // subtract redeemed points?
+    });
+
     const smallScreen = !isWidthUp("md", width);
     return (
       <Fragment>
@@ -240,12 +248,10 @@ class DashboardUser extends React.Component {
                     <PointsWidget
                       onPointsClick={this.onPointsClick}
                       className={classes.pointsWidget}
-                      points={points}
-                      steps={steps}
                       buttonLabel="Convert Tokens To Points"
                       contentItems={[
-                        { number: 99999, text: "Steps Today" },
-                        { number: 99999, text: "Points Earned" }
+                        { number: steps, text: "Steps Today" },
+                        { number: points, text: "Points Earned" }
                       ]}
                     />
                   </Grid>
