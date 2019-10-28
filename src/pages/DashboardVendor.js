@@ -13,6 +13,7 @@ import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
 import compose from "recompose/compose";
 import PointsWidget from "./components/PointsWidget";
 import { withRouter } from "react-router-dom";
+import moment from "moment";
 const styles = theme => ({
   root: {
     margin: "0 auto 0 auto",
@@ -22,6 +23,7 @@ const styles = theme => ({
       padding: "50px 0 80px 0"
     }
   },
+  gridListContainer: {},
   footer: {
     "& button": theme.buttons.primary,
     position: "fixed",
@@ -51,7 +53,19 @@ const styles = theme => ({
     width: "50%"
   },
   page: {
-    marginTop: "20px"
+    marginTop: "20px",
+    paddingLeft: "10vw",
+    paddingRight: "10vw",
+    justifyContent: "space-around",
+    background: "linear-gradient(to top, #F1F8F9 85%, transparent)",
+    width: "100%",
+    "& ul": {
+      width: "100%",
+      height: "100%"
+    },
+    [theme.breakpoints.down("sm")]: {
+      background: "#F1F8F9"
+    }
   },
   pointsWidget: {
     width: "100vw",
@@ -70,62 +84,95 @@ const styles = theme => ({
     }
   }
 });
-const listItems = [
-  {
-    title: "Meal-Kit for a month",
-    img: "/fancy_runner_home.png",
-    points: "5000",
-    icon: "/fancy_runner_home.png",
-    endTime: 1573741250
-  },
-  {
-    title: "Meal-Kit for a month",
-    img: "/fancy_runner_home.png",
-    points: "5000",
-    icon: "/fancy_runner_home.png",
-    endTime: 1573741250
-  },
-  {
-    title: "Meal-Kit for a month",
-    img: "/fancy_runner_home.png",
-    points: "5000",
-    icon: "/fancy_runner_home.png",
-    endTime: 1573741250
-  },
-  {
-    title: "Meal-Kit for a month",
-    img: "/fancy_runner_home.png",
-    points: "5000",
-    icon: "/fancy_runner_home.png",
-    endTime: 1573741250
-  },
-  {
-    title: "Meal-Kit for a month",
-    img: "/fancy_runner_home.png",
-    points: "5000",
-    icon: "/fancy_runner_home.png",
-    endTime: 1573741250
+// const listItems = [
+//   {
+//     title: "Meal-Kit for a month",
+//     img: "/fancy_runner_home.png",
+//     points: "5000",
+//     icon: "/fancy_runner_home.png",
+//     endTime: 1573741250
+//   },
+//   {
+//     title: "Meal-Kit for a month",
+//     img: "/fancy_runner_home.png",
+//     points: "5000",
+//     icon: "/fancy_runner_home.png",
+//     endTime: 1573741250
+//   },
+//   {
+//     title: "Meal-Kit for a month",
+//     img: "/fancy_runner_home.png",
+//     points: "5000",
+//     icon: "/fancy_runner_home.png",
+//     endTime: 1573741250
+//   },
+//   {
+//     title: "Meal-Kit for a month",
+//     img: "/fancy_runner_home.png",
+//     points: "5000",
+//     icon: "/fancy_runner_home.png",
+//     endTime: 1573741250
+//   },
+//   {
+//     title: "Meal-Kit for a month",
+//     img: "/fancy_runner_home.png",
+//     points: "5000",
+//     icon: "/fancy_runner_home.png",
+//     endTime: 1573741250
+//   }
+// ];
+// const expiredListItems = [
+//   {
+//     title: "Meal-Kit for a month",
+//     img: "/fancy_runner_home.png",
+//     points: "5000",
+//     icon: "/fancy_runner_home.png",
+//     endTime: 1571840450
+//   },
+//   {
+//     title: "Meal-Kit for a month",
+//     img: "/fancy_runner_home.png",
+//     points: "5000",
+//     icon: "/fancy_runner_home.png",
+//     endTime: 1571840450
+//   }
+// ];
+class DashboardVendor extends React.Component {
+  state = {
+    pointsConverted: false,
+    missingUserRole: true,
+    value: 0,
+    expiredListItems: [],
+    listItems: []
+  };
+  async componentDidMount() {
+    const resp = await this.props.api.get(
+      `/getRewards?vendorId=${this.props.user["_id"]}`
+    );
+    if (resp.data.error) {
+      alert("could not load rewards");
+    } else {
+      console.log(resp.data);
+      let expiredListItems = [];
+      let listItems = [];
+      resp.data.data.forEach(item => {
+        let itemModel = {
+          title: item.title,
+          img: "/fancy_runner_home.png",
+          points: item.cost,
+          icon: "/fancy_runner_home.png",
+          endTime: item.expirationDate
+        };
+        if (item.expirationDate < moment().unix()) {
+          expiredListItems.push(itemModel);
+        } else {
+          listItems.push(itemModel);
+        }
+      });
+      console.log({ listItems, expiredListItems });
+      this.setState({ listItems, expiredListItems });
+    }
   }
-];
-const expiredListItems = [
-  {
-    title: "Meal-Kit for a month",
-    img: "/fancy_runner_home.png",
-    points: "5000",
-    icon: "/fancy_runner_home.png",
-    endTime: 1571840450
-  },
-  {
-    title: "Meal-Kit for a month",
-    img: "/fancy_runner_home.png",
-    points: "5000",
-    icon: "/fancy_runner_home.png",
-    endTime: 1571840450
-  }
-];
-class DashboardUser extends React.Component {
-  state = { pointsConverted: false, missingUserRole: true, value: 0 };
-  async componentDidMount() {}
   handleChange = (event, newValue) => {
     this.setState({ value: newValue });
   };
@@ -143,7 +190,7 @@ class DashboardUser extends React.Component {
   };
   render() {
     const { classes, width } = this.props;
-    const { value } = this.state;
+    const { value, expiredListItems, listItems } = this.state;
     const smallScreen = !isWidthUp("md", width);
     const points = 99999;
     const steps = 99999;
@@ -189,7 +236,8 @@ class DashboardUser extends React.Component {
                 />
               </Tabs>
             </AppBar>
-            <div
+            <Grid
+              item
               className={classes.page}
               hidden={value !== 0}
               value={value}
@@ -207,8 +255,9 @@ class DashboardUser extends React.Component {
                   ></RewardCell>
                 ))}
               </GridList>
-            </div>
-            <div
+            </Grid>
+            <Grid
+              item
               className={classes.page}
               hidden={value !== 1}
               value={value}
@@ -228,7 +277,7 @@ class DashboardUser extends React.Component {
                   );
                 })}
               </GridList>
-            </div>
+            </Grid>
           </Fragment>
         </Grid>
       </Fragment>
@@ -238,7 +287,7 @@ class DashboardUser extends React.Component {
 
 export default withRouter(
   compose(
-    withStyles(styles, { name: "DashboardUser", withTheme: true }),
+    withStyles(styles, { name: "DashboardVendor", withTheme: true }),
     withWidth()
-  )(DashboardUser)
+  )(DashboardVendor)
 );

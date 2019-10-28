@@ -15,6 +15,7 @@ const styles = theme => ({
   },
   wideButton: {
     minWidth: "30%!important",
+    textTransform: "uppercase!important",
     [theme.breakpoints.down("sm")]: {
       minWidth: "90%!important",
       paddingLeft: "5vw",
@@ -35,7 +36,7 @@ class Footer extends React.Component {
     };
   }
   render() {
-    const { classes } = this.props;
+    const { classes, text, onClick } = this.props;
 
     return (
       <div className={classes.footer}>
@@ -45,8 +46,9 @@ class Footer extends React.Component {
           size="small"
           color="primary"
           aria-label="add"
+          onClick={onClick}
         >
-          Redeem Reward
+          {text}
         </Fab>
       </div>
     );

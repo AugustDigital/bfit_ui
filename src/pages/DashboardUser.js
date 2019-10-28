@@ -15,6 +15,7 @@ import { withRouter } from "react-router-dom";
 import CommonDialog from "./components/CommonDialog";
 import RoundGreenCheckmark from "../res/round_green_checkmark.svg";
 import RoleSelection from "./RoleSelection";
+import moment from "moment";
 const styles = theme => ({
   root: {},
   pointsWidget: {
@@ -34,6 +35,7 @@ const styles = theme => ({
     justifyContent: "space-around",
     background: "linear-gradient(to top, #F1F8F9 85%, transparent)",
     width: "100%",
+    paddingBottom: "100px",
     "& ul": {
       width: "100%",
       height: "100%"
@@ -129,46 +131,76 @@ const styles = theme => ({
     }
   }
 });
-const listItems = [
-  {
-    title: "Meal-Kit for a month",
-    img: "/fancy_runner_home.png",
-    points: "5000",
-    icon: "/fancy_runner_home.png",
-    endTime: 1573741250
-  },
-  {
-    title: "Meal-Kit for a month",
-    img: "/fancy_runner_home.png",
-    points: "5000",
-    icon: "/fancy_runner_home.png",
-    endTime: 1573741250
-  },
-  {
-    title: "Meal-Kit for a month",
-    img: "/fancy_runner_home.png",
-    points: "5000",
-    icon: "/fancy_runner_home.png",
-    endTime: 1573741250
-  },
-  {
-    title: "Meal-Kit for a month",
-    img: "/fancy_runner_home.png",
-    points: "5000",
-    icon: "/fancy_runner_home.png",
-    endTime: 1573741250
-  },
-  {
-    title: "Meal-Kit for a month",
-    img: "/fancy_runner_home.png",
-    points: "5000",
-    icon: "/fancy_runner_home.png",
-    endTime: 1573741250
-  }
-];
+// const listItems = [
+//   {
+//     title: "Meal-Kit for a month",
+//     img: "/fancy_runner_home.png",
+//     points: "5000",
+//     icon: "/fancy_runner_home.png",
+//     endTime: 1573741250
+//   },
+//   {
+//     title: "Meal-Kit for a month",
+//     img: "/fancy_runner_home.png",
+//     points: "5000",
+//     icon: "/fancy_runner_home.png",
+//     endTime: 1573741250
+//   },
+//   {
+//     title: "Meal-Kit for a month",
+//     img: "/fancy_runner_home.png",
+//     points: "5000",
+//     icon: "/fancy_runner_home.png",
+//     endTime: 1573741250
+//   },
+//   {
+//     title: "Meal-Kit for a month",
+//     img: "/fancy_runner_home.png",
+//     points: "5000",
+//     icon: "/fancy_runner_home.png",
+//     endTime: 1573741250
+//   },
+//   {
+//     title: "Meal-Kit for a month",
+//     img: "/fancy_runner_home.png",
+//     points: "5000",
+//     icon: "/fancy_runner_home.png",
+//     endTime: 1573741250
+//   }
+// ];
 class DashboardUser extends React.Component {
-  state = { pointsConverted: false, missingUserRole: true };
-  async componentDidMount() {}
+  state = {
+    pointsConverted: false,
+    missingUserRole: true,
+    expiredListItems: [],
+    listItems: []
+  };
+  async componentDidMount() {
+    const resp = await this.props.api.get(`/getRewards`);
+    if (resp.data.error) {
+      alert("could not load rewards");
+    } else {
+      console.log(resp.data);
+      let expiredListItems = [];
+      let listItems = [];
+      resp.data.data.forEach(item => {
+        let itemModel = {
+          title: item.title,
+          img: "/fancy_runner_home.png",
+          points: item.cost,
+          icon: "/fancy_runner_home.png",
+          endTime: item.expirationDate
+        };
+        if (item.expirationDate < moment().unix()) {
+          expiredListItems.push(itemModel);
+        } else {
+          listItems.push(itemModel);
+        }
+      });
+      console.log({ listItems, expiredListItems });
+      this.setState({ listItems, expiredListItems });
+    }
+  }
   handleOnClick = id => {
     this.props.history.push(`/reward?id=${id}`);
   };
@@ -201,8 +233,8 @@ class DashboardUser extends React.Component {
     }
   };
   render() {
-    const { classes, width, user } = this.props;
-    const { pointsConverted } = this.state;
+    const { classes, width, user, changeRole } = this.props;
+    const { pointsConverted, listItems } = this.state;
     const { steps, points } = user.steps[user.steps.length - 1];
     let pointsTotal = 0;
     user.steps.forEach(stepData => {
@@ -310,7 +342,7 @@ class DashboardUser extends React.Component {
           </Grid>
         </CommonDialog>
         <RoleSelection
-          open={typeof user.roleType == "undefined"}
+          open={typeof user.roleType == "undefined" || changeRole}
           onClose={this.handleRoleDialogClose}
           onRoleClick={this.onRoleClick}
         />

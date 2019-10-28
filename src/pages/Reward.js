@@ -13,7 +13,6 @@ import RewardCell from "./components/RewardCell";
 import NavBar from "./components/NavBar";
 import PointList from "./components/PointList";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
-import Footer from "./components/Footer";
 const styles = theme => ({
   root: {
     margin: "0 auto 0 auto",
@@ -197,7 +196,6 @@ class Reward extends React.Component {
               detailsSection
             )}
           </Grid>
-          {admin ? null : <Footer />}
         </Fragment>
       );
     } else {

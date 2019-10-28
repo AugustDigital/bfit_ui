@@ -28,7 +28,7 @@ console.log(process.env.REACT_APP_API_URL);
 axios.defaults.withCredentials = true;
 const instance = axios.create({
   baseURL: API_URL,
-  timeout: 1000,
+  timeout: 10000,
   withCredentials: true
 });
 class App extends React.Component {
@@ -105,6 +105,9 @@ class App extends React.Component {
                     this.renderIfLoggedIn(
                       <Dashboard
                         admin={query.parse(window.location.search).admin}
+                        changeRole={
+                          query.parse(window.location.search).changeRole
+                        }
                         {...props}
                         user={user}
                         api={instance}

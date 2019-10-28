@@ -3,7 +3,8 @@ import {
   withStyles,
   TextField,
   Typography,
-  InputAdornment
+  InputAdornment,
+  Grid
 } from "@material-ui/core";
 import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
 import ImageOutlinedIcon from "@material-ui/icons/ImageOutlined";
@@ -12,6 +13,8 @@ import { createMuiTheme } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/styles";
 import MomentUtils from "@date-io/moment";
 import NavBar from "./components/NavBar";
+import CommonDialog from "./components/CommonDialog";
+import RoundGreenCheckmark from "../res/round_green_checkmark.svg";
 import moment from "moment";
 import Footer from "./components/Footer";
 const materialTheme = createMuiTheme({
@@ -47,6 +50,21 @@ const styles = theme => ({
   textFieldOutline: {
     borderColor: "white!important",
     borderRadius: "2px"
+  },
+  successDialog: {
+    color: "#032F41",
+    maxWidth: "300px",
+    padding: "30px",
+    textAlign: "center",
+    "& h4": {
+      fontSize: "1.4em",
+      marginTop: "15px",
+      fontWeight: "500"
+    },
+    "& h5": {
+      fontSize: "1.2em",
+      marginTop: "10px"
+    }
   }
 });
 class CreateReward extends React.Component {
@@ -56,9 +74,12 @@ class CreateReward extends React.Component {
       points: 1234,
       endTime: moment.unix(1573741250),
       description: "Long Text Here"
-    }
+    },
+    rewardCreated: false
   };
-  async componentDidMount() {}
+  async componentDidMount() {
+    console.log(this.props.user);
+  }
   handleChange = name => event => {
     let reward = this.state.reward;
     if (name === "endTime") {
@@ -69,9 +90,52 @@ class CreateReward extends React.Component {
 
     this.setState({ reward });
   };
+  onCreateClick = async () => {
+    const formValidationData = this.formValid();
+    if (formValidationData.success) {
+      const { reward } = this.state;
+      const resp = await this.props.api.post("/createReward", {
+        reward: {
+          cost: reward.points,
+          expirationDate: reward.endTime.unix(),
+          title: reward.title,
+          description: reward.description
+        }
+      });
+      if (resp.data.error) {
+        alert(resp.data.error.message);
+      } else {
+        this.setState({ rewardCreated: true });
+      }
+      console.log(resp);
+    } else {
+      alert(formValidationData.error);
+    }
+  };
+  handlePointsDialogClose = () => {
+    this.setState({ rewardCreated: false });
+  };
+  formValid() {
+    const { reward } = this.state;
+    if (!reward.title || reward.title.length === 0) {
+      return { error: "invalid title" };
+    } else if (!reward.description || reward.title.description === 0) {
+      return { error: "invalid description" };
+    } else if (
+      !reward.points ||
+      reward.title.points === 0 ||
+      reward.title.points <= 0
+    ) {
+      return { error: "invalid points value" };
+    } else if (!reward.endTime || moment(reward.endTime) < moment().unix()) {
+      return { error: "invalid end time" };
+    } else {
+      return { success: true };
+    }
+  }
   render() {
     const { classes, id, history } = this.props;
-    const { reward } = this.state;
+    const { reward, rewardCreated } = this.state;
     return (
       <Fragment>
         <NavBar history={history} back="/" />
@@ -175,7 +239,28 @@ class CreateReward extends React.Component {
             }}
           />
         </div>
-        <Footer />
+        <Footer text="Create reward program" onClick={this.onCreateClick} />
+        <CommonDialog
+          open={rewardCreated}
+          onClose={this.handlePointsDialogClose}
+        >
+          <Grid
+            container
+            direction="column"
+            justify="center"
+            alignItems="center"
+            className={classes.successDialog}
+          >
+            <img
+              alt="Checkmark"
+              width="65px"
+              height="65px"
+              src={RoundGreenCheckmark}
+            ></img>
+            <Typography variant="h4">Reward Program</Typography>
+            <Typography variant="h5">Created Successfully</Typography>
+          </Grid>
+        </CommonDialog>
       </Fragment>
     );
   }
