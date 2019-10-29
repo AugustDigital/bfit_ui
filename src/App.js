@@ -71,6 +71,7 @@ class App extends React.Component {
                     this.renderIfLoggedIn(
                       <CreateReward
                         {...props}
+                        API_URL={API_URL}
                         id={query.parse(window.location.search).id}
                         admin={query.parse(window.location.search).admin}
                         user={user}
@@ -86,6 +87,7 @@ class App extends React.Component {
                     this.renderIfLoggedIn(
                       <Reward
                         {...props}
+                        API_URL={API_URL}
                         id={query.parse(window.location.search).id}
                         admin={query.parse(window.location.search).admin}
                         user={user}
@@ -104,6 +106,7 @@ class App extends React.Component {
                   render={props =>
                     this.renderIfLoggedIn(
                       <Dashboard
+                        API_URL={API_URL}
                         admin={query.parse(window.location.search).admin}
                         changeRole={
                           query.parse(window.location.search).changeRole

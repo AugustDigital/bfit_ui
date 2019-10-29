@@ -185,10 +185,13 @@ class DashboardUser extends React.Component {
       let listItems = [];
       resp.data.data.forEach(item => {
         let itemModel = {
+          id: item["_id"],
           title: item.title,
-          img: "/fancy_runner_home.png",
+          img: item.image
+            ? this.props.API_URL + "/" + item.image
+            : "missingImage.svg",
           points: item.cost,
-          icon: "/fancy_runner_home.png",
+          icon: item.creatorLogo ? item.creatorLogo : "missingImage.svg",
           endTime: item.expirationDate
         };
         if (item.expirationDate < moment().unix()) {
@@ -197,7 +200,7 @@ class DashboardUser extends React.Component {
           listItems.push(itemModel);
         }
       });
-      console.log({ listItems, expiredListItems });
+      //console.log({ listItems, expiredListItems });
       this.setState({ listItems, expiredListItems });
     }
   }
@@ -305,7 +308,7 @@ class DashboardUser extends React.Component {
               {listItems.map((item, index) => (
                 <RewardCell
                   onClick={() => {
-                    this.handleOnClick(index); //todo update
+                    this.handleOnClick(item.id); //todo update
                   }}
                   key={index}
                   tile={item}

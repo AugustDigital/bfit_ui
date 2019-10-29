@@ -4,7 +4,6 @@ import compose from "recompose/compose";
 import withWidth from "@material-ui/core/withWidth";
 import DashboardVendor from "./DashboardVendor";
 import DashboardUser from "./DashboardUser";
-
 const styles = theme => ({
   root: {}
 });
@@ -12,13 +11,13 @@ class Dashboard extends React.Component {
   state = { user: null };
   async componentDidMount() {}
   render() {
-    const { user } = this.props;
+    const { user, API_URL } = this.props;
     let content = null;
     if (user) {
       if (user.roleType === 1) {
-        content = <DashboardVendor {...this.props} />;
+        content = <DashboardVendor API_URL={API_URL} {...this.props} />;
       } else {
-        content = <DashboardUser {...this.props} />;
+        content = <DashboardUser API_URL={API_URL} {...this.props} />;
       }
     }
     return content;

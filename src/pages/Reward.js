@@ -5,7 +5,8 @@ import {
   Typography,
   AppBar,
   Tab,
-  Tabs
+  Tabs,
+  CircularProgress
 } from "@material-ui/core";
 import compose from "recompose/compose";
 import { Redirect } from "react-router-dom";
@@ -13,6 +14,8 @@ import RewardCell from "./components/RewardCell";
 import NavBar from "./components/NavBar";
 import PointList from "./components/PointList";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
+
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 const styles = theme => ({
   root: {
     margin: "0 auto 0 auto",
@@ -76,15 +79,41 @@ const styles = theme => ({
     width: "50%"
   },
   page: {
-    marginTop: "20px"
+    marginTop: "20px",
+    width: "100%"
   },
   indicator: {
     backgroundColor: "#032F41"
+  },
+  spinner: {
+    top: "50%",
+    left: "50%",
+    position: "absolute",
+    margin: "-20px 0 0 -20px "
   }
 });
 class Reward extends React.Component {
   state = { value: 0 };
-  async componentDidMount() {}
+  async componentDidMount() {
+    const resp = await this.props.api.get(`/getReward/${this.props.id}`);
+    if (resp.data.error) {
+      alert("could not load rewards");
+    } else {
+      let item = resp.data.data;
+      console.log(item);
+      this.setState({
+        reward: {
+          id: item["_id"],
+          title: item.title,
+          img: item.image ? API_URL + "/" + item.image : "missingImage.svg",
+          points: item.cost,
+          icon: item.creatorLogo ? item.creatorLogo : "missingImage.svg",
+          endTime: item.expirationDate,
+          description: item.description
+        }
+      });
+    }
+  }
   handleChange = (event, newValue) => {
     this.setState({ value: newValue });
   };
@@ -99,7 +128,7 @@ class Reward extends React.Component {
   }
   render() {
     const { classes, id, history, width, admin } = this.props;
-    const { value } = this.state;
+    const { value, reward } = this.state;
     const smallScreen = isWidthDown("sm", width);
     const hasRedeemed = true;
     const testItems = [
@@ -107,97 +136,86 @@ class Reward extends React.Component {
       { points: 5000, timestamp: 1571232825 },
       { points: 5000, timestamp: 1571232825 }
     ];
-    const detailsSection = (
-      <Fragment>
-        <Typography className={classes.rewardsTitle} variant="h5">
-          Details
-        </Typography>
-        <Typography className={classes.rewardsDetails}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-        </Typography>
-      </Fragment>
-    );
+
     if (id) {
-      return (
-        <Fragment>
-          <NavBar
-            history={history}
-            back="/"
-            onEditClick={admin ? this.onEditClicked : null}
-          />
-          <Grid
-            className={classes.root}
-            container
-            direction="column"
-            justify="flex-start"
-            alignItems="center"
-          >
-            <RewardCell
-              className={classes.card}
-              largeImage
-              tile={{
-                title: "Meal-Kit for a month",
-                img: "/fancy_runner_home.png",
-                points: "5000",
-                icon: "/fancy_runner_home.png",
-                endTime: 1573741250
-              }}
+      if (reward) {
+        const detailsSection = (
+          <Fragment>
+            <Typography className={classes.rewardsTitle} variant="h5">
+              Details
+            </Typography>
+            <Typography className={classes.rewardsDetails}>
+              {reward.description}
+            </Typography>
+          </Fragment>
+        );
+        return (
+          <Fragment>
+            <NavBar
+              history={history}
+              back="/"
+              onEditClick={admin ? this.onEditClicked : null}
             />
-            {hasRedeemed ? (
-              <Fragment>
-                <AppBar className={classes.tabBar} position="static">
-                  <Tabs
+            <Grid
+              className={classes.root}
+              container
+              direction="column"
+              justify="flex-start"
+              alignItems="center"
+            >
+              <RewardCell className={classes.card} largeImage tile={reward} />
+              {hasRedeemed ? (
+                <Fragment>
+                  <AppBar className={classes.tabBar} position="static">
+                    <Tabs
+                      value={value}
+                      onChange={this.handleChange}
+                      aria-label="simple tabs example"
+                      classes={{
+                        indicator: classes.indicator
+                      }}
+                    >
+                      <Tab
+                        className={classes.tab}
+                        label="Redeemed"
+                        {...this.a11yProps(0)}
+                      />
+                      <Tab
+                        className={classes.tab}
+                        label="Details"
+                        {...this.a11yProps(1)}
+                      />
+                    </Tabs>
+                  </AppBar>
+                  <div
+                    className={classes.page}
+                    hidden={value !== 0}
                     value={value}
-                    onChange={this.handleChange}
-                    aria-label="simple tabs example"
-                    classes={{
-                      indicator: classes.indicator
-                    }}
+                    index={0}
                   >
-                    <Tab
-                      className={classes.tab}
-                      label="Redeemed"
-                      {...this.a11yProps(0)}
+                    <PointList
+                      items={testItems}
+                      forceVerticalLayout={smallScreen}
                     />
-                    <Tab
-                      className={classes.tab}
-                      label="Details"
-                      {...this.a11yProps(1)}
-                    />
-                  </Tabs>
-                </AppBar>
-                <div
-                  className={classes.page}
-                  hidden={value !== 0}
-                  value={value}
-                  index={0}
-                >
-                  <PointList
-                    items={testItems}
-                    forceVerticalLayout={smallScreen}
-                  />
-                </div>
-                <div
-                  className={classes.page}
-                  hidden={value !== 1}
-                  value={value}
-                  index={1}
-                >
-                  {detailsSection}
-                </div>
-              </Fragment>
-            ) : (
-              detailsSection
-            )}
-          </Grid>
-        </Fragment>
-      );
+                  </div>
+                  <div
+                    className={classes.page}
+                    hidden={value !== 1}
+                    value={value}
+                    index={1}
+                  >
+                    {detailsSection}
+                  </div>
+                </Fragment>
+              ) : (
+                detailsSection
+              )}
+            </Grid>
+          </Fragment>
+        );
+      } else {
+        return <CircularProgress className={classes.spinner} />;
+      }
     } else {
       return <Redirect to="/" />;
     }

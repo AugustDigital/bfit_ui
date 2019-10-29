@@ -37,7 +37,8 @@ const styles = theme => ({
   },
   content: {},
   noShadow: {
-    boxShadow: "none"
+    boxShadow: "none",
+    width: "100%"
   },
   expired: {
     pointerEvents: "none",

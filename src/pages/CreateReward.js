@@ -84,6 +84,9 @@ class CreateReward extends React.Component {
     let reward = this.state.reward;
     if (name === "endTime") {
       reward[name] = event;
+    } else if (name === "file") {
+      reward.image = event.target.files[0];
+      console.log(reward.image);
     } else {
       reward[name] = event.target.value;
     }
@@ -105,9 +108,24 @@ class CreateReward extends React.Component {
       if (resp.data.error) {
         alert(resp.data.error.message);
       } else {
-        this.setState({ rewardCreated: true });
+        console.log(resp);
+        let formData = new FormData();
+        console.log(reward.image);
+        formData.append("image", reward.image);
+        const respImg = await this.props.api.post(
+          `/setRewardImage/${resp.data.data["_id"]}`,
+          formData
+        );
+        if (respImg.data.error) {
+          alert(resp.data.error.message);
+        } else {
+          console.log(resp);
+          let formData = new FormData();
+          console.log(reward.image);
+          formData.append("image", reward.image);
+          this.setState({ rewardCreated: true });
+        }
       }
-      console.log(resp);
     } else {
       alert(formValidationData.error);
     }
@@ -203,7 +221,7 @@ class CreateReward extends React.Component {
             fullWidth
             id="outlined-name"
             label="Upload logo"
-            value={"todo file upload"}
+            type="file"
             onChange={this.handleChange("file")}
             autoComplete="off"
             margin="normal"
