@@ -14,6 +14,9 @@ import RewardCell from "./components/RewardCell";
 import NavBar from "./components/NavBar";
 import PointList from "./components/PointList";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
+import CommonDialog from "./components/CommonDialog";
+import RoundGreenCheckmark from "../res/round_green_checkmark.svg";
+import Footer from "./components/Footer";
 
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 const styles = theme => ({
@@ -45,6 +48,7 @@ const styles = theme => ({
     }
   },
   rewardsDetails: {
+    width: "100%",
     [theme.breakpoints.down("sm")]: {
       paddingLeft: "5vw",
       paddingRight: "5vw"
@@ -90,10 +94,25 @@ const styles = theme => ({
     left: "50%",
     position: "absolute",
     margin: "-20px 0 0 -20px "
+  },
+  successDialog: {
+    color: "#032F41",
+    maxWidth: "300px",
+    padding: "30px",
+    textAlign: "center",
+    "& h4": {
+      fontSize: "1.4em",
+      marginTop: "15px",
+      fontWeight: "500"
+    },
+    "& h5": {
+      fontSize: "1.2em",
+      marginTop: "10px"
+    }
   }
 });
 class Reward extends React.Component {
-  state = { value: 0 };
+  state = { value: 0, rewardRedeemed: false };
   async componentDidMount() {
     const resp = await this.props.api.get(`/getReward/${this.props.id}`);
     if (resp.data.error) {
@@ -118,7 +137,7 @@ class Reward extends React.Component {
     this.setState({ value: newValue });
   };
   onEditClicked = () => {
-    this.props.history.push(`/createUpdateReward`);
+    this.props.history.push(`/createUpdateReward?id=${this.props.id}`);
   };
   a11yProps(index) {
     return {
@@ -126,16 +145,32 @@ class Reward extends React.Component {
       "aria-controls": `simple-tabpanel-${index}`
     };
   }
+  onRedeemClick = async () => {
+    const { reward } = this.state;
+    const resp = await this.props.api.post("/redeemReward/" + reward.id);
+    if (resp.data.error) {
+      alert(resp.data.error.message);
+    } else {
+      console.log(resp);
+
+      this.setState({ rewardRedeemed: true }); //todo change to reward object state
+    }
+  };
+  handlePointsDialogClose = () => {
+    this.setState({ rewardRedeemed: false });
+  };
   render() {
-    const { classes, id, history, width, admin } = this.props;
-    const { value, reward } = this.state;
+    const { classes, id, history, width, admin, user } = this.props;
+    const { value, reward, rewardRedeemed } = this.state;
     const smallScreen = isWidthDown("sm", width);
-    const hasRedeemed = true;
-    const testItems = [
-      { points: 5000, timestamp: 1571232825 },
-      { points: 5000, timestamp: 1571232825 },
-      { points: 5000, timestamp: 1571232825 }
-    ];
+    let hasRedeemed = false;
+    const testItems = [];
+    user.redemptions.forEach(red => {
+      if (red.rewardId === id) {
+        hasRedeemed = true;
+        testItems.push({ points: red.cost, timestamp: red.timeStamp });
+      }
+    });
 
     if (id) {
       if (reward) {
@@ -206,11 +241,35 @@ class Reward extends React.Component {
                   >
                     {detailsSection}
                   </div>
+                  <CommonDialog
+                    open={rewardRedeemed}
+                    onClose={this.handlePointsDialogClose}
+                  >
+                    <Grid
+                      container
+                      direction="column"
+                      justify="center"
+                      alignItems="center"
+                      className={classes.successDialog}
+                    >
+                      <img
+                        alt="Checkmark"
+                        width="65px"
+                        height="65px"
+                        src={RoundGreenCheckmark}
+                      ></img>
+                      <Typography variant="h4">Reward Program</Typography>
+                      <Typography variant="h5">Created Successfully</Typography>
+                    </Grid>
+                  </CommonDialog>
                 </Fragment>
               ) : (
                 detailsSection
               )}
             </Grid>
+            {!admin && (
+              <Footer text="Redeem Reward" onClick={this.onRedeemClick} />
+            )}
           </Fragment>
         );
       } else {

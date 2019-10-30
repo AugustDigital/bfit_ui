@@ -65,20 +65,47 @@ const styles = theme => ({
       fontSize: "1.2em",
       marginTop: "10px"
     }
+  },
+  uploadButton: {
+    backgroundColor: "transparent",
+    boxShadow: "none"
   }
 });
 class CreateReward extends React.Component {
   state = {
     reward: {
-      title: "Name",
-      points: 1234,
-      endTime: moment.unix(1573741250),
-      description: "Long Text Here"
+      title: "",
+      points: "",
+      endTime: moment.unix(moment().unix()),
+      description: "",
+      image: null
     },
     rewardCreated: false
   };
   async componentDidMount() {
-    console.log(this.props.user);
+    console.log(this.props.id);
+    if (this.props.id) {
+      const resp = await this.props.api.get(`/getReward/${this.props.id}`);
+      if (resp.data.error) {
+        alert("could not load rewards");
+      } else {
+        let item = resp.data.data;
+        console.log(item);
+        this.setState({
+          reward: {
+            id: item["_id"],
+            title: item.title,
+            img: item.image
+              ? this.props.API_URL + "/" + item.image
+              : "missingImage.svg",
+            points: item.cost,
+            icon: item.creatorLogo ? item.creatorLogo : "missingImage.svg",
+            endTime: moment.unix(item.expirationDate),
+            description: item.description
+          }
+        });
+      }
+    }
   }
   handleChange = name => event => {
     let reward = this.state.reward;
@@ -94,35 +121,40 @@ class CreateReward extends React.Component {
     this.setState({ reward });
   };
   onCreateClick = async () => {
+    //todo if this.props.id then update
     const formValidationData = this.formValid();
     if (formValidationData.success) {
       const { reward } = this.state;
-      const resp = await this.props.api.post("/createReward", {
-        reward: {
-          cost: reward.points,
-          expirationDate: reward.endTime.unix(),
-          title: reward.title,
-          description: reward.description
+      const resp = await this.props.api.post(
+        "/createReward" + (this.props.id ? `/${this.props.id}` : ""),
+        {
+          reward: {
+            cost: reward.points,
+            expirationDate: reward.endTime.unix(),
+            title: reward.title,
+            description: reward.description
+          }
         }
-      });
+      );
       if (resp.data.error) {
         alert(resp.data.error.message);
       } else {
         console.log(resp);
-        let formData = new FormData();
-        console.log(reward.image);
-        formData.append("image", reward.image);
-        const respImg = await this.props.api.post(
-          `/setRewardImage/${resp.data.data["_id"]}`,
-          formData
-        );
-        if (respImg.data.error) {
-          alert(resp.data.error.message);
-        } else {
-          console.log(resp);
+        if (reward.image) {
           let formData = new FormData();
           console.log(reward.image);
           formData.append("image", reward.image);
+          const respImg = await this.props.api.post(
+            `/setRewardImage/${resp.data.data["_id"]}`,
+            formData
+          );
+          if (respImg.data.error) {
+            alert(resp.data.error.message);
+          } else {
+            console.log(resp);
+            this.setState({ rewardCreated: true });
+          }
+        } else {
           this.setState({ rewardCreated: true });
         }
       }
@@ -217,12 +249,22 @@ class CreateReward extends React.Component {
               />
             </ThemeProvider>
           </MuiPickersUtilsProvider>
+
+          <input
+            ref={el => (this.fileElement = el)}
+            type="file"
+            onChange={this.handleChange("file")}
+            style={{ display: "none" }}
+          />
           <TextField
+            disabled
             fullWidth
             id="outlined-name"
             label="Upload logo"
-            type="file"
-            onChange={this.handleChange("file")}
+            onClick={e => {
+              this.fileElement.click();
+            }}
+            value={reward.image ? reward.image.name : ""}
             autoComplete="off"
             margin="normal"
             variant="outlined"
@@ -257,7 +299,10 @@ class CreateReward extends React.Component {
             }}
           />
         </div>
-        <Footer text="Create reward program" onClick={this.onCreateClick} />
+        <Footer
+          text={id ? "Update Reward Program" : "Create Reward Program"}
+          onClick={this.onCreateClick}
+        />
         <CommonDialog
           open={rewardCreated}
           onClose={this.handlePointsDialogClose}

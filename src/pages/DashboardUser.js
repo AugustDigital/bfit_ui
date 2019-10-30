@@ -131,43 +131,6 @@ const styles = theme => ({
     }
   }
 });
-// const listItems = [
-//   {
-//     title: "Meal-Kit for a month",
-//     img: "/fancy_runner_home.png",
-//     points: "5000",
-//     icon: "/fancy_runner_home.png",
-//     endTime: 1573741250
-//   },
-//   {
-//     title: "Meal-Kit for a month",
-//     img: "/fancy_runner_home.png",
-//     points: "5000",
-//     icon: "/fancy_runner_home.png",
-//     endTime: 1573741250
-//   },
-//   {
-//     title: "Meal-Kit for a month",
-//     img: "/fancy_runner_home.png",
-//     points: "5000",
-//     icon: "/fancy_runner_home.png",
-//     endTime: 1573741250
-//   },
-//   {
-//     title: "Meal-Kit for a month",
-//     img: "/fancy_runner_home.png",
-//     points: "5000",
-//     icon: "/fancy_runner_home.png",
-//     endTime: 1573741250
-//   },
-//   {
-//     title: "Meal-Kit for a month",
-//     img: "/fancy_runner_home.png",
-//     points: "5000",
-//     icon: "/fancy_runner_home.png",
-//     endTime: 1573741250
-//   }
-// ];
 class DashboardUser extends React.Component {
   state = {
     pointsConverted: false,
@@ -239,10 +202,17 @@ class DashboardUser extends React.Component {
     const { classes, width, user, changeRole } = this.props;
     const { pointsConverted, listItems } = this.state;
     const { steps, points } = user.steps[user.steps.length - 1];
-    let pointsTotal = 0;
+    let pointsTotalEarned = 0;
+    let pointsTotalSpent = 0;
     user.steps.forEach(stepData => {
-      pointsTotal += stepData.points; // subtract redeemed points?
+      pointsTotalEarned += stepData.points; // subtract redeemed points?
     });
+    user.redemptions.forEach(redData => {
+      pointsTotalSpent += redData.cost;
+    });
+    let pointsTotal = pointsTotalEarned - pointsTotalSpent;
+    console.log("total points earned: " + pointsTotalEarned);
+    console.log("total points spent:" + pointsTotalSpent);
 
     const smallScreen = !isWidthUp("md", width);
     return (

@@ -24,7 +24,6 @@ const styles = theme => ({
   }
 });
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
-console.log(process.env.REACT_APP_API_URL);
 axios.defaults.withCredentials = true;
 const instance = axios.create({
   baseURL: API_URL,
@@ -46,7 +45,7 @@ class App extends React.Component {
   }
   renderIfLoggedIn(component, user) {
     if (user) {
-      console.log("authed?" + user.googleId);
+      console.log("authed=" + (user !== null));
       return component;
     } else {
       console.log("redirect");
@@ -54,7 +53,6 @@ class App extends React.Component {
     }
   }
   render() {
-    //let query = new URLSearchParams(useLocation().search);
     const { classes } = this.props;
     const { loading, user } = this.state;
     return (

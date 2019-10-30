@@ -189,7 +189,11 @@ class DashboardVendor extends React.Component {
     this.props.history.push(`/reward?id=${id}&admin=true`);
   };
   onPointsClick = () => {
-    this.props.history.push(`/createUpdateReward?id=${this.props.id}`);
+    if (this.props.id) {
+      this.props.history.push(`/createUpdateReward?id=${this.props.id}`);
+    } else {
+      this.props.history.push(`/createUpdateReward`);
+    }
   };
   render() {
     const { classes, width } = this.props;
