@@ -208,7 +208,9 @@ class DashboardUser extends React.Component {
       pointsTotalEarned += stepData.points; // subtract redeemed points?
     });
     user.redemptions.forEach(redData => {
-      pointsTotalSpent += redData.cost;
+      if (redData) {
+        pointsTotalSpent += redData.cost;
+      }
     });
     let pointsTotal = pointsTotalEarned - pointsTotalSpent;
     console.log("total points earned: " + pointsTotalEarned);
@@ -217,7 +219,7 @@ class DashboardUser extends React.Component {
     const smallScreen = !isWidthUp("md", width);
     return (
       <Fragment>
-        <NavBar />
+        <NavBar redeemedItems={user.redemptions} pointsItems={user.steps} />
         <Grid
           className={classes.root}
           container

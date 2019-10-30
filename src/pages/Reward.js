@@ -166,7 +166,7 @@ class Reward extends React.Component {
     let hasRedeemed = false;
     const testItems = [];
     user.redemptions.forEach(red => {
-      if (red.rewardId === id) {
+      if (red && red.rewardId === id) {
         hasRedeemed = true;
         testItems.push({ points: red.cost, timestamp: red.timeStamp });
       }
@@ -190,6 +190,8 @@ class Reward extends React.Component {
               history={history}
               back="/"
               onEditClick={admin ? this.onEditClicked : null}
+              redeemedItems={user.redemptions}
+              pointsItems={user.steps}
             />
             <Grid
               className={classes.root}

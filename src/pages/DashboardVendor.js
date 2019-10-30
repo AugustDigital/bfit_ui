@@ -196,14 +196,14 @@ class DashboardVendor extends React.Component {
     }
   };
   render() {
-    const { classes, width } = this.props;
+    const { classes, width, history } = this.props;
     const { value, expiredListItems, listItems } = this.state;
     const smallScreen = !isWidthUp("md", width);
     const points = 99999;
     const steps = 99999;
     return (
       <Fragment>
-        <NavBar />
+        <NavBar history={history} admin={true} />
         <Grid
           className={classes.root}
           container

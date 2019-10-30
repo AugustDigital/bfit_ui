@@ -188,7 +188,7 @@ class CreateReward extends React.Component {
     const { reward, rewardCreated } = this.state;
     return (
       <Fragment>
-        <NavBar history={history} back="/" />
+        <NavBar history={history} back="/" admin={true} />
         <div className={classes.root}>
           <Typography variant="h6">
             {id ? "Update Reward Details" : "Enter Reward Details"}

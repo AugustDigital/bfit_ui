@@ -58,7 +58,7 @@ class PointList extends React.Component {
               alt="reward vendor logo"
               width="30px"
               height="30px"
-              src="/fancy_runner_home.png"
+              src={item.image}
             />
           </div>
         ) : null}

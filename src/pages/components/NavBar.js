@@ -8,13 +8,15 @@ import {
   Grid,
   MenuItem,
   Select,
-  Input
+  Input,
+  Fab
 } from "@material-ui/core";
 import ProfileIcon from "../../res/profile_icon.svg";
 import CloseIcon from "../../res/close_icon.svg";
 import BackIcon from "../../res/back_icon.svg";
 import EditIcon from "../../res/edit_icon.svg";
 import PointList from "./PointList";
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 const styles = theme => ({
   root: {
     background: "white",
@@ -123,11 +125,18 @@ const styles = theme => ({
     maxHeight: "60vh",
     padding: "3vh",
     overflowY: "scroll",
+    "& button": theme.buttons.secondary,
     [theme.breakpoints.down("sm")]: {
       width: "100vw",
       maxHeight: "100vh",
       height: "100vh"
     }
+  },
+  logoutButton: {
+    width: "100%!important",
+    fontSize: "1.0em!important",
+    marginBottom: "15px",
+    textTransform: "uppercase!important"
   },
   nestedDropDown: {},
   nestedDropSelect: {
@@ -185,17 +194,46 @@ class NavBar extends React.Component {
       pointsType: event.target.value
     });
   };
+  onLogoutClick = () => {
+    window.location.href = API_URL + "/logout";
+  };
+  onProfileClick = () => {
+    this.props.history.push("/history");
+  };
   render() {
-    const { classes, onEditClick } = this.props;
+    const {
+      classes,
+      onEditClick,
+      redeemedItems,
+      pointsItems,
+      admin
+    } = this.props;
     const { pointsType } = this.state;
-    const testItems = [
-      { points: 5000, pointsType, timestamp: 1571232825 },
-      { points: 5000, pointsType, timestamp: 1571232825 },
-      { points: 5000, pointsType, timestamp: 1571232825 },
-      { points: 5000, pointsType, timestamp: 1571232825 },
-      { points: 5000, pointsType, timestamp: 1571232825 },
-      { points: 5000, pointsType, timestamp: 1571232825 }
-    ];
+    let itemModels = [];
+    if (pointsType === 1 && redeemedItems) {
+      //earned
+      itemModels = redeemedItems
+        .filter(item => item)
+        .map(item => {
+          item.pointsType = 1;
+          item.points = item.cost;
+          item.timestamp = item.timeStamp;
+          item.image = item.image
+            ? API_URL + "/" + item.image
+            : "missingImage.svg";
+          return item;
+        });
+    } else if (pointsType === 0 && pointsItems) {
+      //redeemed
+      itemModels = pointsItems
+        .filter(item => item)
+        .map(item => {
+          item.pointsType = 0;
+          item.timestamp = item.day;
+          return item;
+        });
+    }
+
     return (
       <Fragment>
         <Grid
@@ -267,27 +305,52 @@ class NavBar extends React.Component {
         >
           <span className={classes.arrow} ref={this.handleArrowRef} />
           <Paper className={classes.dropDownContent}>
-            <Select
-              className={classes.nestedDropSelect}
-              value={pointsType}
-              onChange={this.handleChange}
-              input={
-                <Input
-                  classes={{
-                    input: classes.nestedDropSelectInput,
-                    underline: styles.underline
-                  }}
-                />
-              }
+            <Fab
+              className={classes.logoutButton}
+              variant="extended"
+              size="small"
+              color="primary"
+              aria-label="add"
+              onClick={this.onLogoutClick}
             >
-              <MenuItem value={0}>Points Earned</MenuItem>
-              <MenuItem value={1}>Points Redeemed</MenuItem>
-            </Select>
-            <PointList
-              className={classes.pointList}
-              items={testItems}
-              forceVerticalLayout={true}
-            />
+              Logout
+            </Fab>
+            {!admin ? (
+              <Fragment>
+                <Select
+                  className={classes.nestedDropSelect}
+                  value={pointsType}
+                  onChange={this.handleChange}
+                  input={
+                    <Input
+                      classes={{
+                        input: classes.nestedDropSelectInput,
+                        underline: styles.underline
+                      }}
+                    />
+                  }
+                >
+                  <MenuItem value={0}>Points Earned</MenuItem>
+                  <MenuItem value={1}>Points Redeemed</MenuItem>
+                </Select>
+                <PointList
+                  className={classes.pointList}
+                  items={itemModels}
+                  forceVerticalLayout={true}
+                />
+              </Fragment>
+            ) : (
+              <Fab
+                className={classes.logoutButton}
+                variant="extended"
+                size="small"
+                color="primary"
+                aria-label="add"
+                onClick={this.onProfileClick}
+              >
+                Profile
+              </Fab>
+            )}
           </Paper>
         </Popper>
         {this.state.anchorRef !== null ? (
