@@ -152,7 +152,7 @@ class Reward extends React.Component {
       alert(resp.data.error.message);
     } else {
       console.log(resp);
-
+      this.props.user.redemptions = resp.data.data.redemptions;
       this.setState({ rewardRedeemed: true }); //todo change to reward object state
     }
   };
