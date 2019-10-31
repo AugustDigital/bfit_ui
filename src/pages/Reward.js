@@ -15,6 +15,7 @@ import NavBar from "./components/NavBar";
 import PointList from "./components/PointList";
 import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 import CommonDialog from "./components/CommonDialog";
+import EmptyListPlaceholder from "./components/EmptyListPlaceholder";
 import RoundGreenCheckmark from "../res/round_green_checkmark.svg";
 import Footer from "./components/Footer";
 
@@ -153,7 +154,7 @@ class Reward extends React.Component {
     } else {
       console.log(resp);
       this.props.user.redemptions = resp.data.data.redemptions;
-      this.setState({ rewardRedeemed: true }); //todo change to reward object state
+      this.setState({ rewardRedeemed: true });
     }
   };
   handlePointsDialogClose = () => {
@@ -163,14 +164,35 @@ class Reward extends React.Component {
     const { classes, id, history, width, admin, user } = this.props;
     const { value, reward, rewardRedeemed } = this.state;
     const smallScreen = isWidthDown("sm", width);
+    console.log(smallScreen ? "small screen" : "wide screen");
     let hasRedeemed = false;
-    const testItems = [];
-    user.redemptions.forEach(red => {
-      if (red && red.rewardId === id) {
-        hasRedeemed = true;
-        testItems.push({ points: red.cost, timestamp: red.timeStamp });
-      }
-    });
+    const redItems = [];
+    if (user.roleType === 1) {
+      user.vendorRedemptions.forEach(red => {
+        if (red && red.rewardId === id) {
+          //hasRedeemed = true;
+          redItems.push({
+            id: red.rewardId,
+            points: red.cost,
+            timestamp: red.timeStamp,
+            userName: red.userName
+          });
+        }
+      });
+    } else {
+      user.redemptions.forEach(red => {
+        console.log(red.rewardId);
+        console.log(id);
+        if (red && red.rewardId === id) {
+          hasRedeemed = true;
+          redItems.push({
+            id: red.rewardId,
+            points: red.cost,
+            timestamp: red.timeStamp
+          });
+        }
+      });
+    }
 
     if (id) {
       if (reward) {
@@ -201,7 +223,7 @@ class Reward extends React.Component {
               alignItems="center"
             >
               <RewardCell className={classes.card} largeImage tile={reward} />
-              {hasRedeemed ? (
+              {hasRedeemed || admin ? (
                 <Fragment>
                   <AppBar className={classes.tabBar} position="static">
                     <Tabs
@@ -230,10 +252,11 @@ class Reward extends React.Component {
                     value={value}
                     index={0}
                   >
-                    <PointList
-                      items={testItems}
-                      forceVerticalLayout={smallScreen}
-                    />
+                    {redItems.length > 0 ? (
+                      <PointList items={redItems} forceVerticalLayout={true} />
+                    ) : (
+                      <EmptyListPlaceholder />
+                    )}
                   </div>
                   <div
                     className={classes.page}
@@ -243,31 +266,31 @@ class Reward extends React.Component {
                   >
                     {detailsSection}
                   </div>
-                  <CommonDialog
-                    open={rewardRedeemed}
-                    onClose={this.handlePointsDialogClose}
-                  >
-                    <Grid
-                      container
-                      direction="column"
-                      justify="center"
-                      alignItems="center"
-                      className={classes.successDialog}
-                    >
-                      <img
-                        alt="Checkmark"
-                        width="65px"
-                        height="65px"
-                        src={RoundGreenCheckmark}
-                      ></img>
-                      <Typography variant="h4">Reward Program</Typography>
-                      <Typography variant="h5">Created Successfully</Typography>
-                    </Grid>
-                  </CommonDialog>
                 </Fragment>
               ) : (
                 detailsSection
               )}
+              <CommonDialog
+                open={rewardRedeemed}
+                onClose={this.handlePointsDialogClose}
+              >
+                <Grid
+                  container
+                  direction="column"
+                  justify="center"
+                  alignItems="center"
+                  className={classes.successDialog}
+                >
+                  <img
+                    alt="Checkmark"
+                    width="65px"
+                    height="65px"
+                    src={RoundGreenCheckmark}
+                  ></img>
+                  <Typography variant="h4">Reward Program</Typography>
+                  <Typography variant="h5">Created Successfully</Typography>
+                </Grid>
+              </CommonDialog>
             </Grid>
             {!admin && (
               <Footer text="Redeem Reward" onClick={this.onRedeemClick} />

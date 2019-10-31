@@ -196,11 +196,13 @@ class DashboardVendor extends React.Component {
     }
   };
   render() {
-    const { classes, width, history } = this.props;
+    const { classes, width, history, user } = this.props;
     const { value, expiredListItems, listItems } = this.state;
     const smallScreen = !isWidthUp("md", width);
-    const points = 99999;
-    const steps = 99999;
+    let points = 0;
+    user.vendorRedemptions.forEach(red => {
+      points += red.cost;
+    });
     return (
       <Fragment>
         <NavBar history={history} admin={true} />
@@ -214,10 +216,8 @@ class DashboardVendor extends React.Component {
           <PointsWidget
             onPointsClick={this.onPointsClick}
             className={classes.pointsWidget}
-            points={points}
-            steps={steps}
             buttonLabel="Create Reward Program"
-            contentItems={[{ number: 99999, text: "Total Redeemed" }]}
+            contentItems={[{ number: points, text: "Total Redeemed" }]}
           />
 
           <Fragment>

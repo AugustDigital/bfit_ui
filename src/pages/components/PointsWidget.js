@@ -45,7 +45,9 @@ class PointsWidget extends React.Component {
       }
       return (
         <Grid item className={composedClass} key={index}>
-          <Typography variant="h5">{item.number}</Typography>
+          <Typography variant="h5">
+            {item.number ? item.number.toLocaleString() : 0}
+          </Typography>
           <Typography variant="h6">{item.text}</Typography>
         </Grid>
       );

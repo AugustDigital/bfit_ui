@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="124px" height="112px" viewBox="0 0 124 112" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
+    <title>Group 4</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-120.3%" y="-197.4%" width="340.6%" height="494.9%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="10" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="15" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.0747377622 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+        <rect id="path-2" x="4.26325641e-14" y="-1.84741111e-13" width="63.8400025" height="38.6400015" rx="0.480000019"></rect>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Vendor_Redeemed_Detailsempty@2x" transform="translate(-651.000000, -647.000000)">
+            <g id="Group-2" transform="translate(592.000000, 647.000000)">
+                <g id="Group-4" transform="translate(69.000000, 0.000000)">
+                    <circle id="Oval" fill="#032F41" opacity="0.163039435" cx="52" cy="52" r="52"></circle>
+                    <g id="Group-3" filter="url(#filter-1)" transform="translate(20.000000, 33.000000)">
+                        <mask id="mask-3" fill="white">
+                            <use xlink:href="#path-2"></use>
+                        </mask>
+                        <use id="Mask" fill="#DBEAEC" xlink:href="#path-2"></use>
+                        <rect id="Rectangle" fill="#FFFFFF" mask="url(#mask-3)" x="4.26325641e-14" y="19.4400008" width="63.8400025" height="19.2000008"></rect>
+                        <circle id="Oval" fill="#DBEAEC" mask="url(#mask-3)" cx="8.40000033" cy="28.8000011" r="4.20000017"></circle>
+                        <rect id="Rectangle" fill="#DBEAEC" mask="url(#mask-3)" x="17.4000007" y="24.600001" width="27.6000011" height="3.60000014"></rect>
+                        <rect id="Rectangle-Copy" fill="#DBEAEC" mask="url(#mask-3)" x="17.4000007" y="28.8000011" width="20.4000008" height="3.60000014"></rect>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

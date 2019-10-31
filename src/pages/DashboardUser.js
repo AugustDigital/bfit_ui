@@ -204,6 +204,7 @@ class DashboardUser extends React.Component {
     const { steps, points } = user.steps[user.steps.length - 1];
     let pointsTotalEarned = 0;
     let pointsTotalSpent = 0;
+    let stepsUnclaimed = steps - points;
     user.steps.forEach(stepData => {
       pointsTotalEarned += stepData.points; // subtract redeemed points?
     });
@@ -244,12 +245,12 @@ class DashboardUser extends React.Component {
                 >
                   <Grid item>
                     <Typography className={classes.pointsLabel} variant="h1">
-                      {pointsTotal}
+                      {pointsTotal.toLocaleString()}
                     </Typography>
                   </Grid>
                   <Grid item>
                     <Typography className={classes.pointsSublable} variant="h6">
-                      Points balance
+                      SWEATS balance
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -258,8 +259,7 @@ class DashboardUser extends React.Component {
                       className={classes.pointsWidget}
                       buttonLabel="Convert Tokens To Points"
                       contentItems={[
-                        { number: steps, text: "Steps Today" },
-                        { number: points, text: "Points Earned" }
+                        { number: stepsUnclaimed, text: "Unclaimed SWEATS" }
                       ]}
                     />
                   </Grid>
@@ -292,7 +292,7 @@ class DashboardUser extends React.Component {
           </Grid>
         </Grid>
         <div className={classes.background}>
-          <Typography variant="h1">{pointsTotal}</Typography>
+          <Typography variant="h1">{pointsTotal.toLocaleString()}</Typography>
         </div>
         <CommonDialog
           open={pointsConverted}

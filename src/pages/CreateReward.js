@@ -212,7 +212,7 @@ class CreateReward extends React.Component {
           <TextField
             fullWidth
             id="outlined-name"
-            label="Redemption Cost (pts)"
+            label="Redemption Cost (SWEATS)"
             value={reward.points}
             onChange={this.handleChange("points")}
             autoComplete="off"

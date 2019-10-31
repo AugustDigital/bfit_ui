@@ -119,10 +119,10 @@ class RewardCell extends React.Component {
                   alignItems="flex-start"
                 >
                   <Typography gutterBottom variant="h5" component="h2">
-                    {tile.title}
+                    {tile.title ? tile.title : "No Title"}
                   </Typography>
                   <Typography variant="body2" component="p">
-                    {tile.points} pts
+                    {tile.points ? tile.points.toLocaleString() : 0} SWEATS
                   </Typography>
                 </Grid>
               </Grid>

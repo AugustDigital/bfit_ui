@@ -39,7 +39,7 @@ class PointList extends React.Component {
   state = {};
   async componentDidMount() {}
   composeItem(classes, item, index) {
-    return (
+    const content = (
       <Grid
         key={index}
         className={
@@ -62,12 +62,29 @@ class PointList extends React.Component {
             />
           </div>
         ) : null}
-        <Typography>{item.points} pts</Typography>
+        {item.userName && (
+          <Typography className={classes.date}>{item.userName}</Typography>
+        )}
+        <Typography>{item.points.toLocaleString()} SWEATS</Typography>
         <Typography className={classes.date}>
           {shortDateFormat(item.timestamp)}
         </Typography>
       </Grid>
     );
+    console.log(item);
+    if (item.pointsType === 1) {
+      return (
+        <div
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            window.location = "/reward?id=" + item.rewardId;
+          }}
+        >
+          {content}
+        </div>
+      );
+    }
+    return content;
   }
   render() {
     const { classes, items, forceVerticalLayout, className } = this.props;
