@@ -1,5 +1,5 @@
 import React from "react";
-import { withStyles, Grid, Typography, Fab, Button } from "@material-ui/core";
+import { withStyles, Grid, Typography, Fab } from "@material-ui/core";
 import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
 import GoogleIcon from "../res/google_icon.svg";
 import compose from "recompose/compose";
@@ -158,11 +158,7 @@ class Login extends React.Component {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={1} className={classes.footer}>
-              <Button size="small" className={classes.margin}>
-                Sign up for an account
-              </Button>
-            </Grid>
+            <Grid item xs={1} className={classes.footer}></Grid>
           </Grid>
         </Grid>
         <Grid item xs={12} md={6} className={classes.runnerImage}></Grid>

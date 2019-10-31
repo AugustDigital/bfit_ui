@@ -215,7 +215,8 @@ class DashboardUser extends React.Component {
     let pointsTotal = pointsTotalEarned - pointsTotalSpent;
     console.log("total points earned: " + pointsTotalEarned);
     console.log("total points spent:" + pointsTotalSpent);
-
+    let showRoleSelection =
+      typeof user.roleType === undefined || changeRole !== undefined;
     const smallScreen = !isWidthUp("md", width);
     return (
       <Fragment>
@@ -317,7 +318,7 @@ class DashboardUser extends React.Component {
           </Grid>
         </CommonDialog>
         <RoleSelection
-          open={typeof user.roleType == "undefined" || changeRole}
+          open={showRoleSelection}
           onClose={this.handleRoleDialogClose}
           onRoleClick={this.onRoleClick}
         />
