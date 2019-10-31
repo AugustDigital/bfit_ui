@@ -214,8 +214,6 @@ class DashboardUser extends React.Component {
       }
     });
     let pointsTotal = pointsTotalEarned - pointsTotalSpent;
-    console.log("total points earned: " + pointsTotalEarned);
-    console.log("total points spent:" + pointsTotalSpent);
     let showRoleSelection =
       typeof user.roleType === undefined || changeRole !== undefined;
     const smallScreen = !isWidthUp("md", width);
@@ -257,9 +255,9 @@ class DashboardUser extends React.Component {
                     <PointsWidget
                       onPointsClick={this.onPointsClick}
                       className={classes.pointsWidget}
-                      buttonLabel="Convert Tokens To Points"
+                      buttonLabel="Convert Steps to SWEATS"
                       contentItems={[
-                        { number: stepsUnclaimed, text: "Unclaimed SWEATS" }
+                        { number: stepsUnclaimed, text: "Unclaimed Steps" }
                       ]}
                     />
                   </Grid>
