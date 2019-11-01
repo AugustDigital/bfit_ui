@@ -23,7 +23,7 @@ class EmptyListPlaceholder extends React.Component {
   async componentDidMount() {}
 
   render() {
-    const { classes } = this.props;
+    const { classes, title, details } = this.props;
     return (
       <Grid
         className={classes.root}
@@ -33,9 +33,13 @@ class EmptyListPlaceholder extends React.Component {
         alignItems="center"
       >
         <img alt="place holder" src={NoItemsIcon} />
-        <Typography variant="h4">No redemptions made</Typography>
+        <Typography variant="h4">
+          {title ? title : "No redemptions made"}
+        </Typography>
         <Typography variant="h5">
-          Once a redemption has been made it will appear here
+          {details
+            ? details
+            : "Once a redemption has been made it will appear here"}
         </Typography>
       </Grid>
     );

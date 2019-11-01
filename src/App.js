@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Reward from "./pages/Reward";
 import CreateReward from "./pages/CreateReward";
+import Vendor from "./pages/Vendor";
 import query from "query-string";
 import axios from "axios";
 const styles = theme => ({
@@ -110,6 +111,20 @@ class App extends React.Component {
                           query.parse(window.location.search).changeRole
                         }
                         {...props}
+                        user={user}
+                        api={instance}
+                      />,
+                      user
+                    )
+                  }
+                />
+                <Route
+                  path="/vendor"
+                  render={props =>
+                    this.renderIfLoggedIn(
+                      <Vendor
+                        {...props}
+                        API_URL={API_URL}
                         user={user}
                         api={instance}
                       />,

@@ -260,7 +260,7 @@ class CreateReward extends React.Component {
             disabled
             fullWidth
             id="outlined-name"
-            label="Upload logo"
+            label="Upload Picture"
             onClick={e => {
               this.fileElement.click();
             }}

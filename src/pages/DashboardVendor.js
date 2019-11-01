@@ -14,6 +14,7 @@ import compose from "recompose/compose";
 import PointsWidget from "./components/PointsWidget";
 import { withRouter } from "react-router-dom";
 import moment from "moment";
+import EmptyListPlaceholder from "./components/EmptyListPlaceholder";
 const styles = theme => ({
   root: {
     margin: "0 auto 0 auto",
@@ -163,7 +164,9 @@ class DashboardVendor extends React.Component {
             ? this.props.API_URL + "/" + item.image
             : "missingImage.svg",
           points: item.cost,
-          icon: item.creatorLogo ? item.creatorLogo : "missingImage.svg",
+          icon: item.creatorLogo
+            ? this.props.API_URL + "/" + item.creatorLogo
+            : "missingImage.svg",
           endTime: item.expirationDate
         };
         if (item.expirationDate < moment().unix()) {
@@ -203,6 +206,28 @@ class DashboardVendor extends React.Component {
     user.vendorRedemptions.forEach(red => {
       points += red.cost;
     });
+    let listItemsViews = listItems.map((item, index) => (
+      <RewardCell
+        onClick={() => {
+          this.handleOnClick(item.id); //todo update
+        }}
+        key={index}
+        tile={item}
+        className={classes.rewardCell}
+      ></RewardCell>
+    ));
+    let expiredListItemsViews = expiredListItems.map((item, index) => {
+      return (
+        <RewardCell
+          onClick={() => {
+            this.handleOnClick(item.id); //todo update
+          }}
+          key={index}
+          tile={item}
+          className={classes.rewardCell}
+        ></RewardCell>
+      );
+    });
     return (
       <Fragment>
         <NavBar history={history} admin={true} />
@@ -217,7 +242,7 @@ class DashboardVendor extends React.Component {
             onPointsClick={this.onPointsClick}
             className={classes.pointsWidget}
             buttonLabel="Create Reward Program"
-            contentItems={[{ number: points, text: "Total Redeemed" }]}
+            contentItems={[{ number: points, text: "Total SWEATS Redeemed" }]}
           />
 
           <Fragment>
@@ -251,16 +276,14 @@ class DashboardVendor extends React.Component {
               index={0}
             >
               <GridList cellHeight={110} cols={smallScreen ? 1 : 4}>
-                {listItems.map((item, index) => (
-                  <RewardCell
-                    onClick={() => {
-                      this.handleOnClick(item.id); //todo update
-                    }}
-                    key={index}
-                    tile={item}
-                    className={classes.rewardCell}
-                  ></RewardCell>
-                ))}
+                {listItemsViews.length > 0 ? (
+                  listItemsViews
+                ) : (
+                  <EmptyListPlaceholder
+                    title="No Items"
+                    details="Create a reward to see it here"
+                  />
+                )}
               </GridList>
             </Grid>
             <Grid
@@ -271,18 +294,14 @@ class DashboardVendor extends React.Component {
               index={1}
             >
               <GridList cellHeight={110} cols={smallScreen ? 1 : 4}>
-                {expiredListItems.map((item, index) => {
-                  return (
-                    <RewardCell
-                      onClick={() => {
-                        this.handleOnClick(item.id); //todo update
-                      }}
-                      key={index}
-                      tile={item}
-                      className={classes.rewardCell}
-                    ></RewardCell>
-                  );
-                })}
+                {expiredListItemsViews.length > 0 ? (
+                  expiredListItemsViews
+                ) : (
+                  <EmptyListPlaceholder
+                    title="No Expired Items"
+                    details="Expired rewards will show up here "
+                  />
+                )}
               </GridList>
             </Grid>
           </Fragment>

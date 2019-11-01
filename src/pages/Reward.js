@@ -127,7 +127,9 @@ class Reward extends React.Component {
           title: item.title,
           img: item.image ? API_URL + "/" + item.image : "missingImage.svg",
           points: item.cost,
-          icon: item.creatorLogo ? item.creatorLogo : "missingImage.svg",
+          icon: item.creatorLogo
+            ? this.props.API_URL + "/" + item.creatorLogo
+            : "missingImage.svg",
           endTime: item.expirationDate,
           description: item.description
         }
@@ -167,6 +169,17 @@ class Reward extends React.Component {
     console.log(smallScreen ? "small screen" : "wide screen");
     let hasRedeemed = false;
     const redItems = [];
+    let pointsTotalEarned = 0;
+    let pointsTotalSpent = 0;
+    user.steps.forEach(stepData => {
+      pointsTotalEarned += stepData.points; // subtract redeemed points?
+    });
+    user.redemptions.forEach(redData => {
+      if (redData) {
+        pointsTotalSpent += redData.cost;
+      }
+    });
+    let balance = pointsTotalEarned - pointsTotalSpent;
     if (user.roleType === 1) {
       user.vendorRedemptions.forEach(red => {
         if (red && red.rewardId === id) {
@@ -287,8 +300,14 @@ class Reward extends React.Component {
                     height="65px"
                     src={RoundGreenCheckmark}
                   ></img>
-                  <Typography variant="h4">Reward Program</Typography>
-                  <Typography variant="h5">Created Successfully</Typography>
+                  <Typography variant="h4">
+                    Rewards Redeemed Succesfully
+                  </Typography>
+                  <Typography variant="h5">
+                    Your remaining points balance is:
+                    <br />
+                    <b>{balance}</b>
+                  </Typography>
                 </Grid>
               </CommonDialog>
             </Grid>

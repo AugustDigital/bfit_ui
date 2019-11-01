@@ -206,7 +206,8 @@ class NavBar extends React.Component {
       onEditClick,
       redeemedItems,
       pointsItems,
-      admin
+      admin,
+      noMenu
     } = this.props;
     const { pointsType } = this.state;
     let itemModels = [];
@@ -259,28 +260,37 @@ class NavBar extends React.Component {
           <Typography className={classes.header} variant="h5">
             BFIT
           </Typography>
-          {onEditClick ? (
-            <IconButton
-              aria-label="delete"
-              className={classes.dropdownButton}
-              onClick={onEditClick}
-            >
-              <img alt="edit icon" width="25px" height="25px" src={EditIcon} />
-            </IconButton>
+          {!noMenu ? (
+            onEditClick ? (
+              <IconButton
+                aria-label="delete"
+                className={classes.dropdownButton}
+                onClick={onEditClick}
+              >
+                <img
+                  alt="edit icon"
+                  width="25px"
+                  height="25px"
+                  src={EditIcon}
+                />
+              </IconButton>
+            ) : (
+              <IconButton
+                aria-label="delete"
+                className={classes.dropdownButton}
+                ref={this.buttonRef}
+                onClick={this.onClick}
+              >
+                <img
+                  alt="dropdown icon"
+                  width="25px"
+                  height="25px"
+                  src={this.state.anchorRef ? CloseIcon : ProfileIcon}
+                />
+              </IconButton>
+            )
           ) : (
-            <IconButton
-              aria-label="delete"
-              className={classes.dropdownButton}
-              ref={this.buttonRef}
-              onClick={this.onClick}
-            >
-              <img
-                alt="dropdown icon"
-                width="25px"
-                height="25px"
-                src={this.state.anchorRef ? CloseIcon : ProfileIcon}
-              />
-            </IconButton>
+            <div className={classes.dropdownButton}></div>
           )}
         </Grid>
         <Popper

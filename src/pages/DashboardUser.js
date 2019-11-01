@@ -15,6 +15,7 @@ import { withRouter } from "react-router-dom";
 import CommonDialog from "./components/CommonDialog";
 import RoundGreenCheckmark from "../res/round_green_checkmark.svg";
 import RoleSelection from "./RoleSelection";
+import CountUp from "react-countup";
 import moment from "moment";
 const styles = theme => ({
   root: {},
@@ -154,7 +155,9 @@ class DashboardUser extends React.Component {
             ? this.props.API_URL + "/" + item.image
             : "missingImage.svg",
           points: item.cost,
-          icon: item.creatorLogo ? item.creatorLogo : "missingImage.svg",
+          icon: item.creatorLogo
+            ? this.props.API_URL + "/" + item.creatorLogo
+            : "missingImage.svg",
           endTime: item.expirationDate
         };
         if (item.expirationDate < moment().unix()) {
@@ -187,14 +190,14 @@ class DashboardUser extends React.Component {
     this.setState({ user: this.props.user });
   };
   onRoleClick = async roleType => {
-    await this.props.api.post("/setRole", { roleType: roleType });
-    this.props.user.roleType = roleType;
     if (roleType === 1) {
       //vendor
-      this.props.history.push(`/?admin=true`);
+      this.props.history.push(`/vendor`); //?admin=true
       this.handleRoleDialogClose();
     } else {
       //user
+      await this.props.api.post("/setRole", { roleType: roleType });
+      this.props.user.roleType = roleType;
       this.handleRoleDialogClose();
     }
   };
@@ -215,7 +218,8 @@ class DashboardUser extends React.Component {
     });
     let pointsTotal = pointsTotalEarned - pointsTotalSpent;
     let showRoleSelection =
-      typeof user.roleType === undefined || changeRole !== undefined;
+      user.roleType === undefined || changeRole !== undefined;
+
     const smallScreen = !isWidthUp("md", width);
     return (
       <Fragment>
@@ -242,9 +246,18 @@ class DashboardUser extends React.Component {
                   alignItems="center"
                 >
                   <Grid item>
-                    <Typography className={classes.pointsLabel} variant="h1">
-                      {pointsTotal.toLocaleString()}
-                    </Typography>
+                    <CountUp start={0} end={pointsTotal} delay={0}>
+                      {({ countUpRef }) => (
+                        <div>
+                          <Typography
+                            className={classes.pointsLabel}
+                            variant="h1"
+                          >
+                            <span ref={countUpRef} />
+                          </Typography>
+                        </div>
+                      )}
+                    </CountUp>
                   </Grid>
                   <Grid item>
                     <Typography className={classes.pointsSublable} variant="h6">

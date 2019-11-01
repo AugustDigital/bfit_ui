@@ -100,7 +100,7 @@ class PointList extends React.Component {
       <Grid
         className={classes.root + " " + className}
         container
-        direction={forceVerticalLayout ? "column" : "row"}
+        direction={forceVerticalLayout ? "column-reverse" : "row"}
         justify="center"
         alignItems="center"
       >
