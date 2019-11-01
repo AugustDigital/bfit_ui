@@ -15,6 +15,7 @@ import { withRouter } from "react-router-dom";
 import CommonDialog from "./components/CommonDialog";
 import RoundGreenCheckmark from "../res/round_green_checkmark.svg";
 import RoleSelection from "./RoleSelection";
+import EmptyListPlaceholder from "./components/EmptyListPlaceholder";
 import CountUp from "react-countup";
 import moment from "moment";
 const styles = theme => ({
@@ -289,16 +290,23 @@ class DashboardUser extends React.Component {
                   Reward offers
                 </Typography>
               </GridListTile>
-              {listItems.map((item, index) => (
-                <RewardCell
-                  onClick={() => {
-                    this.handleOnClick(item.id); //todo update
-                  }}
-                  key={index}
-                  tile={item}
-                  className={classes.rewardCell}
-                ></RewardCell>
-              ))}
+              {listItems.length > 0 ? (
+                listItems.map((item, index) => (
+                  <RewardCell
+                    onClick={() => {
+                      this.handleOnClick(item.id); //todo update
+                    }}
+                    key={index}
+                    tile={item}
+                    className={classes.rewardCell}
+                  ></RewardCell>
+                ))
+              ) : (
+                <EmptyListPlaceholder
+                  title="No Rewards Awailable"
+                  details="Check back soon to see rewards awailable for you"
+                />
+              )}
             </GridList>
           </Grid>
         </Grid>

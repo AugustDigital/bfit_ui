@@ -202,6 +202,7 @@ class DashboardVendor extends React.Component {
     const { classes, width, history, user } = this.props;
     const { value, expiredListItems, listItems } = this.state;
     const smallScreen = !isWidthUp("md", width);
+    console.log(user);
     let points = 0;
     user.vendorRedemptions.forEach(red => {
       points += red.cost;

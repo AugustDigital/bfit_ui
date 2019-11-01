@@ -4,7 +4,11 @@ import {
   TextField,
   Typography,
   InputAdornment,
-  Grid
+  Grid,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Select
 } from "@material-ui/core";
 import ImageOutlinedIcon from "@material-ui/icons/ImageOutlined";
 import NavBar from "./components/NavBar";
@@ -25,6 +29,39 @@ const styles = theme => ({
   textField: {
     backgroundColor: "white",
     boxShadow: "0px 10px 30px rgba(0,0,0,0.1)"
+  },
+  dropdownContainer: {
+    padding: "0 10px 14px 14px",
+    backgroundImage:
+      "linear-gradient(rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.03) 13%, rgba(255,255,255,1) 5%)",
+
+    boxShadow: "0px 10px 30px rgba(0,0,0,0.1)"
+  },
+  dropdown: {
+    backgroundColor: "transparent",
+    width: "100%",
+    borderStyle: "none!important",
+    "&:before": {
+      borderColor: "white"
+    },
+    "&:after": {
+      borderColor: "white"
+    }
+  },
+  dropdownInput: {
+    border: "none",
+    "&:before": {
+      borderColor: "white"
+    },
+    "&:after": {
+      borderColor: "white"
+    }
+  },
+  dropdownLable: {
+    paddingLeft: "10px"
+  },
+  notchedOutline: {
+    display: "none"
   },
   textFieldOutline: {
     borderColor: "white!important",
@@ -61,7 +98,7 @@ class Vendor extends React.Component {
       addressProvince: "",
       addressCountry: "",
       addressPostalCode: "",
-      category: ""
+      category: "Food & Beverage"
     },
     vendorCreated: false
   };
@@ -120,7 +157,9 @@ class Vendor extends React.Component {
         console.log(resp);
         this.props.user.roleType = 1;
         this.props.user.vendorData = resp.data.data.vendorData;
-        if (vendorData.image) {
+        this.props.user.vendorRedemptions = resp.data.data.vendorRedemptions;
+        console.log(this.props.user);
+        if (vendorData.image && vendorData.image.name) {
           let formData = new FormData();
           console.log(vendorData.image);
           formData.append("image", vendorData.image);
@@ -212,7 +251,13 @@ class Vendor extends React.Component {
               onClick={e => {
                 this.fileElement.click();
               }}
-              value={vendorData.image ? vendorData.image.name : ""}
+              value={
+                vendorData.image
+                  ? vendorData.image.name
+                    ? vendorData.image.name
+                    : vendorData.image
+                  : ""
+              }
               autoComplete="off"
               variant="outlined"
               className={classes.textField}
@@ -325,10 +370,40 @@ class Vendor extends React.Component {
               className={classes.textField}
               InputProps={{
                 classes: {
-                  notchedOutline: classes.textFieldOutline
+                  notchedOutline: classes.notchedOutline
                 }
               }}
             />
+          </Grid>
+          <Grid item xs={6}>
+            <div className={classes.dropdownContainer}>
+              <FormControl className={classes.dropdown}>
+                <InputLabel
+                  htmlFor="filled-age-simple"
+                  className="dropdownLable"
+                >
+                  Category
+                </InputLabel>
+                <Select
+                  notchedOutline
+                  className={classes.dropdownInput}
+                  value={vendorData.category}
+                  onChange={this.handleChange("category")}
+                  fullWidth
+                  inputProps={{
+                    name: "age",
+                    id: "filled-age-simple"
+                  }}
+                >
+                  <MenuItem value={"Food & Beverage"}>
+                    Food {"&"} Beverage
+                  </MenuItem>
+                  <MenuItem value={"Lifestyle"}>Lifestyle</MenuItem>
+                  <MenuItem value={"Fitness"}>Fitness</MenuItem>
+                  <MenuItem value={"Health"}>Health</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
           </Grid>
         </Grid>
         <Footer
