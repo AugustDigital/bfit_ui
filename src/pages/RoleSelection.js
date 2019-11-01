@@ -19,12 +19,15 @@ const styles = theme => ({
     filter: "opacity(92%)"
   },
   roleDialogContent: {
-    height: "100%",
     "& h3": {
       maxWidth: "350px",
       marginBottom: "50px",
+      marginTop: "10%",
       color: "white",
-      textAlign: "center"
+      textAlign: "center",
+      [theme.breakpoints.down("sm")]: {
+        marginTop: "30px"
+      }
     }
   },
   roleButton: {
