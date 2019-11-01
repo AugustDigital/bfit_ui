@@ -198,7 +198,7 @@ class NavBar extends React.Component {
     window.location.href = API_URL + "/logout";
   };
   onProfileClick = () => {
-    this.props.history.push("/history");
+    this.props.history.push("/vendor");
   };
   render() {
     const {
