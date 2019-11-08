@@ -169,6 +169,7 @@ class CreateReward extends React.Component {
   };
   handlePointsDialogClose = () => {
     this.setState({ rewardCreated: false });
+    this.props.history.push("/");
   };
   handleErrorDialogClose = () => {
     this.setState({ errorMessage: false });
@@ -182,8 +183,8 @@ class CreateReward extends React.Component {
     } else if (
       !reward.points ||
       reward.points === 0 ||
-      reward.points <= 100 ||
-      reward.points >= 10000
+      reward.points < 100 ||
+      reward.points > 10000
     ) {
       return { error: "Points must be between 100 and 10000" };
     } else if (!reward.endTime || moment(reward.endTime) < moment().unix()) {
