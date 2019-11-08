@@ -32,6 +32,9 @@ const styles = theme => ({
     backgroundColor: "rgba(255,255,255,0.85)",
     borderRadius: "5px",
     padding: "20px",
+    [theme.breakpoints.down("sm")]: {
+      boxShadow: "0px 2px 5px 3px rgba(0,0,0,0.1)"
+    },
     "& h5": {
       fontSize: "1.2em",
       fontWeight: "600",

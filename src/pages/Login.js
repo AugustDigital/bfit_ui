@@ -15,7 +15,7 @@ const styles = theme => ({
     },
     height: "800px",
     width: "730px",
-    backgroundImage: "url('/fancy_runner.png')",
+    backgroundImage: "url('/fancy_runner.png');",
     backgroundPosition: "center center",
     backgroundRepeat: "no-repeat"
   },
@@ -27,7 +27,8 @@ const styles = theme => ({
     [theme.breakpoints.down("sm")]: {
       backgroundPosition: "center center",
       backgroundRepeat: "no-repeat",
-      backgroundImage: "url('/fancy_runner.png')"
+      backgroundImage:
+        "linear-gradient(rgba(250,250,250,0.4), rgba(250,250,250,0.1)), url('/fancy_runner.png');"
     },
     height: "100%",
     "& h1": {
