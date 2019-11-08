@@ -225,6 +225,7 @@ class DashboardUser extends React.Component {
     let pointsTotalSpent = 0;
     const REDEMPTION_RATIO = 10;
     let stepsUnclaimed = steps - points * REDEMPTION_RATIO;
+    stepsUnclaimed = Math.max(0, stepsUnclaimed);
     user.steps.forEach(stepData => {
       pointsTotalEarned += stepData.points; // subtract redeemed points?
     });
