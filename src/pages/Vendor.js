@@ -193,6 +193,7 @@ class Vendor extends React.Component {
   };
   handlePointsDialogClose = () => {
     this.setState({ vendorCreated: false });
+    this.props.history.push("/");
   };
   formValid() {
     const { vendorData } = this.state;
