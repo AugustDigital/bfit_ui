@@ -219,7 +219,7 @@ class NavBar extends React.Component {
           item.pointsType = 1;
           item.points = item.cost;
           item.timestamp = item.timeStamp;
-          item.image = item.image
+          item.fullImage = item.image
             ? API_URL + "/" + item.image
             : "missingImage.svg";
           return item;
@@ -345,7 +345,11 @@ class NavBar extends React.Component {
                 </Select>
                 <PointList
                   className={classes.pointList}
-                  items={itemModels}
+                  items={itemModels.map(item => {
+                    let out = { ...item };
+                    out.image = out.fullImage;
+                    return out;
+                  })}
                   forceVerticalLayout={true}
                 />
               </Fragment>
