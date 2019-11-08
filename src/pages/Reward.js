@@ -19,6 +19,8 @@ import EmptyListPlaceholder from "./components/EmptyListPlaceholder";
 import RoundGreenCheckmark from "../res/round_green_checkmark.svg";
 import Footer from "./components/Footer";
 
+import { HighlightOffRounded } from "@material-ui/icons";
+
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 const styles = theme => ({
   root: {
@@ -110,10 +112,14 @@ const styles = theme => ({
       fontSize: "1.2em",
       marginTop: "10px"
     }
+  },
+  errorIcon: {
+    fontSize: 84,
+    color: "red"
   }
 });
 class Reward extends React.Component {
-  state = { value: 0, rewardRedeemed: false };
+  state = { value: 0, rewardRedeemed: false, errorMessage: false };
   async componentDidMount() {
     const resp = await this.props.api.get(`/getReward/${this.props.id}`);
     if (resp.data.error) {
@@ -152,7 +158,7 @@ class Reward extends React.Component {
     const { reward } = this.state;
     const resp = await this.props.api.post("/redeemReward/" + reward.id);
     if (resp.data.error) {
-      alert(resp.data.error.message);
+      this.setState({ errorMessage: resp.data.error });
     } else {
       console.log(resp);
       this.props.user.redemptions = resp.data.data.redemptions;
@@ -162,9 +168,12 @@ class Reward extends React.Component {
   handlePointsDialogClose = () => {
     this.setState({ rewardRedeemed: false });
   };
+  handleErrorDialogClose = () => {
+    this.setState({ errorMessage: false });
+  };
   render() {
     const { classes, id, history, width, admin, user } = this.props;
-    const { value, reward, rewardRedeemed } = this.state;
+    const { value, reward, rewardRedeemed, errorMessage } = this.state;
     const smallScreen = isWidthDown("sm", width);
     console.log(smallScreen ? "small screen" : "wide screen");
     let hasRedeemed = false;
@@ -308,6 +317,22 @@ class Reward extends React.Component {
                     <br />
                     <b>{balance}</b>
                   </Typography>
+                </Grid>
+              </CommonDialog>
+              <CommonDialog
+                open={errorMessage}
+                onClose={this.handleErrorDialogClose}
+              >
+                <Grid
+                  container
+                  direction="column"
+                  justify="center"
+                  alignItems="center"
+                  className={classes.successDialog}
+                >
+                  <HighlightOffRounded className={classes.errorIcon} />
+                  <Typography variant="h4">Reward Program</Typography>
+                  <Typography variant="h5">{errorMessage}</Typography>
                 </Grid>
               </CommonDialog>
             </Grid>

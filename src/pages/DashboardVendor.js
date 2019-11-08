@@ -85,59 +85,7 @@ const styles = theme => ({
     }
   }
 });
-// const listItems = [
-//   {
-//     title: "Meal-Kit for a month",
-//     img: "/fancy_runner_home.png",
-//     points: "5000",
-//     icon: "/fancy_runner_home.png",
-//     endTime: 1573741250
-//   },
-//   {
-//     title: "Meal-Kit for a month",
-//     img: "/fancy_runner_home.png",
-//     points: "5000",
-//     icon: "/fancy_runner_home.png",
-//     endTime: 1573741250
-//   },
-//   {
-//     title: "Meal-Kit for a month",
-//     img: "/fancy_runner_home.png",
-//     points: "5000",
-//     icon: "/fancy_runner_home.png",
-//     endTime: 1573741250
-//   },
-//   {
-//     title: "Meal-Kit for a month",
-//     img: "/fancy_runner_home.png",
-//     points: "5000",
-//     icon: "/fancy_runner_home.png",
-//     endTime: 1573741250
-//   },
-//   {
-//     title: "Meal-Kit for a month",
-//     img: "/fancy_runner_home.png",
-//     points: "5000",
-//     icon: "/fancy_runner_home.png",
-//     endTime: 1573741250
-//   }
-// ];
-// const expiredListItems = [
-//   {
-//     title: "Meal-Kit for a month",
-//     img: "/fancy_runner_home.png",
-//     points: "5000",
-//     icon: "/fancy_runner_home.png",
-//     endTime: 1571840450
-//   },
-//   {
-//     title: "Meal-Kit for a month",
-//     img: "/fancy_runner_home.png",
-//     points: "5000",
-//     icon: "/fancy_runner_home.png",
-//     endTime: 1571840450
-//   }
-// ];
+
 class DashboardVendor extends React.Component {
   state = {
     pointsConverted: false,
@@ -199,7 +147,7 @@ class DashboardVendor extends React.Component {
     }
   };
   render() {
-    const { classes, width, history, user } = this.props;
+    const { classes, width, history, user, API_URL } = this.props;
     const { value, expiredListItems, listItems } = this.state;
     const smallScreen = !isWidthUp("md", width);
     console.log(user);
@@ -243,6 +191,19 @@ class DashboardVendor extends React.Component {
             onPointsClick={this.onPointsClick}
             className={classes.pointsWidget}
             buttonLabel="Create Reward Program"
+            disableButton={user.vendorData.status !== 1}
+            extraMessage={
+              !user.vendorData.status || user.vendorData.status === 0 ? (
+                <span>Your application is pending</span>
+              ) : !user.vendorData.status || user.vendorData.status === 2 ? (
+                <span>
+                  You have been rejected.{" "}
+                  <a style={{ color: "pink" }} href={`${API_URL}/changeRole`}>
+                    Change role?
+                  </a>
+                </span>
+              ) : null
+            }
             contentItems={[{ number: points, text: "Total SWEATS Redeemed" }]}
           />
 

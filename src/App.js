@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Reward from "./pages/Reward";
 import CreateReward from "./pages/CreateReward";
 import Vendor from "./pages/Vendor";
+import Admin from "./pages/Admin";
 import query from "query-string";
 import axios from "axios";
 const styles = theme => ({
@@ -34,8 +35,6 @@ const instance = axios.create({
 class App extends React.Component {
   state = { loading: true, user: null };
   async componentDidMount() {
-    //console.log(JSON.parse(Cookies.get("user")));
-    //this.setState({ user: JSON.parse(Cookies.get("user")) });
     const resp = await instance.get("/user");
     console.log(resp.data.data);
     if (resp.data.error) {
@@ -53,6 +52,13 @@ class App extends React.Component {
       return <Redirect to="/login" />;
     }
   }
+  renderIfFullVendor(component, user) {
+    if (user && user.roleType === 1 && !user.vendorData) {
+      return <Redirect to="/vendor" />;
+    } else {
+      return component;
+    }
+  }
   render() {
     const { classes } = this.props;
     const { loading, user } = this.state;
@@ -65,17 +71,39 @@ class App extends React.Component {
             <div>
               <Switch>
                 <Route
+                  path="/admin"
+                  render={props =>
+                    this.renderIfFullVendor(
+                      this.renderIfLoggedIn(
+                        <Admin
+                          {...props}
+                          API_URL={API_URL}
+                          id={query.parse(window.location.search).id}
+                          admin={query.parse(window.location.search).admin}
+                          user={user}
+                          api={instance}
+                        />,
+                        user
+                      ),
+                      user
+                    )
+                  }
+                />
+                <Route
                   path="/createUpdateReward"
                   render={props =>
-                    this.renderIfLoggedIn(
-                      <CreateReward
-                        {...props}
-                        API_URL={API_URL}
-                        id={query.parse(window.location.search).id}
-                        admin={query.parse(window.location.search).admin}
-                        user={user}
-                        api={instance}
-                      />,
+                    this.renderIfFullVendor(
+                      this.renderIfLoggedIn(
+                        <CreateReward
+                          {...props}
+                          API_URL={API_URL}
+                          id={query.parse(window.location.search).id}
+                          admin={query.parse(window.location.search).admin}
+                          user={user}
+                          api={instance}
+                        />,
+                        user
+                      ),
                       user
                     )
                   }
@@ -103,17 +131,17 @@ class App extends React.Component {
                   exact
                   path="/"
                   render={props =>
-                    this.renderIfLoggedIn(
-                      <Dashboard
-                        API_URL={API_URL}
-                        admin={query.parse(window.location.search).admin}
-                        changeRole={
-                          query.parse(window.location.search).changeRole
-                        }
-                        {...props}
-                        user={user}
-                        api={instance}
-                      />,
+                    this.renderIfFullVendor(
+                      this.renderIfLoggedIn(
+                        <Dashboard
+                          API_URL={API_URL}
+                          admin={query.parse(window.location.search).admin}
+                          {...props}
+                          user={user}
+                          api={instance}
+                        />,
+                        user
+                      ),
                       user
                     )
                   }

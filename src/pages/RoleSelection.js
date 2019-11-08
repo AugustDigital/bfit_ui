@@ -1,23 +1,8 @@
 import React from "react";
 import { withStyles, Grid, Typography, Fab } from "@material-ui/core";
-import CommonDialog from "./components/CommonDialog";
+import GoogleIcon from "../res/google_icon.svg";
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 const styles = theme => ({
-  roleDialog: {
-    width: "100%",
-    height: "100%",
-    background: "url('/fancy_runner_home.png')",
-    backgroundPosition: "center center",
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
-    "& button": theme.buttons.secondary
-  },
-  roleDialogTint: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    background: "#022937",
-    filter: "opacity(92%)"
-  },
   roleDialogContent: {
     "& h3": {
       maxWidth: "350px",
@@ -31,12 +16,11 @@ const styles = theme => ({
     }
   },
   roleButton: {
-    minWidth: "250px!important",
-    marginBottom: "15px",
+    minWidth: "200px!important",
+    marginBottom: "5px",
     textTransform: "uppercase!important"
   },
   roleWrapper: {
-    backgroundColor: "#F1F8F9",
     maxWidth: "360px",
     margin: "5px",
     [theme.breakpoints.down("sm")]: {
@@ -45,7 +29,8 @@ const styles = theme => ({
     }
   },
   roleContainer: {
-    backgroundColor: "#F1F8F9",
+    backgroundColor: "rgba(255,255,255,0.85)",
+    borderRadius: "5px",
     padding: "20px",
     "& h5": {
       fontSize: "1.2em",
@@ -57,12 +42,32 @@ const styles = theme => ({
       fontWeight: "400",
       marginBottom: "15px",
       textAlign: "center"
+    },
+    "& a": {
+      textDecoration: "none",
+      paddingLeft: "10px",
+      paddingRight: "20px"
+    },
+    "& button": {
+      backgroundColor: "white",
+      color: "black",
+      boxShadow: "0px 1px 1px -1px rgba(0,0,0,0.4)",
+      textTransform: "none",
+      padding: "0",
+      "&:hover": {
+        backgroundColor: "lightgray"
+      },
+      "& img": {
+        width: "25px",
+        height: "25px",
+        marginRight: "10px"
+      }
     }
   }
 });
 class RoleCell extends React.Component {
   render() {
-    const { classes, onRoleClick, title, description, buttonText } = this.props;
+    const { classes, title, description, buttonText, roleType } = this.props;
     return (
       <Grid
         className={classes.roleContainer}
@@ -73,16 +78,18 @@ class RoleCell extends React.Component {
       >
         <Typography variant="h5">{title}</Typography>
         <Typography variant="h6">{description}</Typography>
-        <Fab
-          className={classes.roleButton}
-          variant="extended"
-          size="small"
-          color="primary"
-          aria-label="add"
-          onClick={onRoleClick}
-        >
-          {buttonText}
-        </Fab>
+        <a href={`${API_URL}/auth/google?userType=${roleType}`}>
+          <Fab
+            className={classes.roleButton}
+            variant="extended"
+            size="small"
+            color="primary"
+            aria-label="add"
+          >
+            <img alt="google logo" src={GoogleIcon} />
+            {buttonText}
+          </Fab>
+        </a>
       </Grid>
     );
   }
@@ -92,56 +99,38 @@ class RoleSelection extends React.Component {
   async componentDidMount() {}
 
   render() {
-    const { classes, open, handleRoleDialogClose, onRoleClick } = this.props;
+    const { classes } = this.props;
 
     return (
-      <CommonDialog
-        fullScreen={true}
-        open={open}
-        onClose={handleRoleDialogClose}
+      <Grid
+        container
+        direction="column"
+        justify="center"
+        alignItems="center"
+        className={classes.roleDialogContent}
       >
-        <div className={classes.roleDialog}>
-          <div className={classes.roleDialogTint}>
-            <Grid
-              container
-              direction="column"
-              justify="center"
-              alignItems="center"
-              className={classes.roleDialogContent}
-            >
-              <Typography variant="h3">
-                Which role are you singning up for?
-              </Typography>
-              <Grid
-                container
-                direction="row"
-                justify="center"
-                alignItems="center"
-              >
-                <Grid item sm={6} className={classes.roleWrapper}>
-                  <RoleCell
-                    classes={classes}
-                    onRoleClick={() => onRoleClick(0)}
-                    title="BFITTER"
-                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt."
-                    buttonText="I want to be a bfitter"
-                  />
-                </Grid>
+        <Grid container direction="row" justify="center" alignItems="center">
+          <Grid item sm={6} className={classes.roleWrapper}>
+            <RoleCell
+              classes={classes}
+              roleType={0}
+              title="BFITTER"
+              description="BFitters are at the centre of BFit. BFitters can earn SWEAT points by walking, monitoring their steps with Google Fit and claiming those steps in BFit. There are multiple rewards that BFitters can get with their SWEAT points."
+              buttonText="I want to be a bfitter"
+            />
+          </Grid>
 
-                <Grid item sm={6} className={classes.roleWrapper}>
-                  <RoleCell
-                    classes={classes}
-                    onRoleClick={() => onRoleClick(1)}
-                    title="VENDOR"
-                    description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt."
-                    buttonText="I want to be a vendor"
-                  />
-                </Grid>
-              </Grid>
-            </Grid>
-          </div>
-        </div>
-      </CommonDialog>
+          <Grid item sm={6} className={classes.roleWrapper}>
+            <RoleCell
+              classes={classes}
+              roleType={1}
+              title="VENDOR"
+              description="Vendor are businesses that create rewards for BFitters. Vendor join the BFit platform to increase user engagement. In order to be a vendor, business will need to submit an application after log in and BFit administrators will process the application."
+              buttonText="I want to be a vendor"
+            />
+          </Grid>
+        </Grid>
+      </Grid>
     );
   }
 }

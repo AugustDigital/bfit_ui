@@ -23,8 +23,16 @@ const styles = theme => ({
   wideButton: {
     minWidth: "280px!important"
   },
+  disabledButton: {
+    pointerEvents: "none",
+    backgroundColor: "rgba(255, 255, 255, 0.65) !important"
+  },
   rightBorder: {
     borderRight: "0.5px solid rgba(255,255,255, 0.1)"
+  },
+  extraLable: {
+    color: "white",
+    fontSize: "0.6em"
   }
 });
 class PointsWidget extends React.Component {
@@ -36,7 +44,9 @@ class PointsWidget extends React.Component {
       className,
       onPointsClick,
       buttonLabel,
-      contentItems
+      contentItems,
+      disableButton,
+      extraMessage
     } = this.props;
     const textContent = contentItems.map((item, index) => {
       let composedClass = classes.dataItem;
@@ -71,7 +81,11 @@ class PointsWidget extends React.Component {
           </Grid>
         </Grid>
         <Fab
-          className={classes.wideButton}
+          className={
+            classes.wideButton +
+            " " +
+            (disableButton ? classes.disabledButton : "")
+          }
           variant="extended"
           size="small"
           color="primary"
@@ -80,6 +94,11 @@ class PointsWidget extends React.Component {
         >
           {buttonLabel}
         </Fab>
+        {extraMessage && (
+          <Typography className={classes.extraLable} variant="h6">
+            {extraMessage}
+          </Typography>
+        )}
       </Grid>
     );
   }

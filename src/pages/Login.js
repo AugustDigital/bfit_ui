@@ -1,12 +1,13 @@
 import React from "react";
-import { withStyles, Grid, Typography, Fab } from "@material-ui/core";
+import { withStyles, Grid, Typography } from "@material-ui/core";
 import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
-import GoogleIcon from "../res/google_icon.svg";
 import compose from "recompose/compose";
+import RoleSelection from "./RoleSelection";
 const contentMarginLeft = "5vw";
 const styles = theme => ({
   root: {
-    height: "100vh"
+    height: "100vh",
+    "& button": theme.buttons.secondary
   },
   runnerImage: {
     [theme.breakpoints.down("sm")]: {
@@ -21,17 +22,12 @@ const styles = theme => ({
   leftContainer: {
     height: "100%"
   },
-  contentContainerWrapper: {
-    [theme.breakpoints.down("sm")]: {
-      maxWidth: "100vw"
-    }
-  },
+
   contentContainer: {
     [theme.breakpoints.down("sm")]: {
       backgroundPosition: "center center",
       backgroundRepeat: "no-repeat",
-      backgroundImage: "url('/fancy_runner.png')",
-      maxWidth: "100%"
+      backgroundImage: "url('/fancy_runner.png')"
     },
     height: "100%",
     "& h1": {
@@ -55,62 +51,38 @@ const styles = theme => ({
       marginRight: "50%",
       width: "60%"
     },
-    "& button": {
-      backgroundColor: "white",
-      color: "black",
-      marginTop: "4vh",
-      marginLeft: contentMarginLeft,
-      boxShadow: "0px 1px 1px -1px rgba(0,0,0,0.4)",
-      textTransform: "none",
-      padding: "0",
-      "&:hover": {
-        backgroundColor: "lightgray"
-      },
-      "& img": {
-        width: "25px",
-        height: "25px"
-      },
-      "& a": {
-        padding: "0 10px 0 10px",
-        color: "black",
-        textDecoration: "none",
-        marginLeft: "-40px",
-        marginRight: "-10px",
-        paddingLeft: "50px",
-        paddingRight: "20px"
-      }
+    "& h6": {
+      color: "#032F41",
+      marginLeft: contentMarginLeft
     }
   },
   footer: {
     [theme.breakpoints.down("sm")]: {
-      width: "100vw"
+      display: "none"
     },
     backgroundColor: "#032F41",
     width: "50vw",
     maxWidth: "100%",
     color: "white",
-    textAlign: "center",
-    "& button": {
-      backgroundColor: "transparent",
-      top: "50%",
-      transform: "translateY(-50%)",
-      color: "white",
-      margin: "auto",
-      padding: "8px",
-      "&:hover": {
-        backgroundColor: "rgba(255,255,255,0.5)"
-      }
-    }
+    textAlign: "center"
   }
 });
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
+//const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 class Login extends React.Component {
   state = {};
   async componentDidMount() {}
+  handleRoleDialogClose = () => {
+    this.setState({ user: this.props.user });
+  };
+  onRoleClick = async roleType => {
+    await this.props.api.get(`/auth/google?userType=${roleType}`, {
+      roleType: roleType
+    });
+    this.handleRoleDialogClose();
+  };
   render() {
     const { classes, width } = this.props;
-    console.log(classes);
-    const smallScreen = !isWidthUp("sm", width);
+    const smallScreen = !isWidthUp("md", width);
     console.log(smallScreen);
     return (
       <Grid
@@ -128,7 +100,7 @@ class Login extends React.Component {
             justify="center"
             alignItems="stretch"
           >
-            <Grid item xs={11} className={classes.contentContainerWrapper}>
+            <Grid item>
               <Grid
                 className={classes.contentContainer}
                 container
@@ -143,25 +115,37 @@ class Login extends React.Component {
                   <Typography variant="h2">
                     Earn rewards while you stay fit.
                   </Typography>
+
+                  <Typography variant="subtitle1">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Duis aute irure dolor in reprehenderit in voluptate velit
+                    esse cillum dolore eu fugiat nulla pariatur.
+                  </Typography>
                 </Grid>
                 <Grid item>
-                  <Fab
-                    variant="extended"
-                    size="small"
-                    color="primary"
-                    aria-label="add"
-                    className={classes.signInButton}
-                  >
-                    <img alt="google logo" src={GoogleIcon} />
-                    <a href={`${API_URL}/auth/google`}>Sign in with Google</a>
-                  </Fab>
+                  {smallScreen && (
+                    <RoleSelection onRoleClick={this.onRoleClick} />
+                  )}
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={1} className={classes.footer}></Grid>
+            <Grid item className={classes.footer}></Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} md={6} className={classes.runnerImage}></Grid>
+        <Grid
+          container
+          direction="column"
+          justify="center"
+          item
+          xs={12}
+          md={6}
+          className={classes.runnerImage}
+        >
+          <RoleSelection onRoleClick={this.onRoleClick} />
+        </Grid>
       </Grid>
     );
   }

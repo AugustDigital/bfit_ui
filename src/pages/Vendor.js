@@ -16,6 +16,8 @@ import CommonDialog from "./components/CommonDialog";
 import RoundGreenCheckmark from "../res/round_green_checkmark.svg";
 import Footer from "./components/Footer";
 
+import { HighlightOffRounded } from "@material-ui/icons";
+
 const styles = theme => ({
   root: {
     margin: "0 auto 0 auto",
@@ -85,6 +87,10 @@ const styles = theme => ({
   uploadButton: {
     backgroundColor: "transparent",
     boxShadow: "none"
+  },
+  errorIcon: {
+    fontSize: 84,
+    color: "red"
   }
 });
 class Vendor extends React.Component {
@@ -100,7 +106,8 @@ class Vendor extends React.Component {
       addressPostalCode: "",
       category: "Food & Beverage"
     },
-    vendorCreated: false
+    vendorCreated: false,
+    errorMessage: null
   };
   async componentDidMount() {
     console.log(!this.props.user.vendorData ? "new vendor" : "existing vendor");
@@ -116,7 +123,8 @@ class Vendor extends React.Component {
           addressProvince: vd.addressProvince,
           addressCountry: vd.addressCountry,
           addressPostalCode: vd.addressPostalCode,
-          category: vd.category
+          category: vd.category,
+          about: vd.about
         }
       });
     }
@@ -148,11 +156,12 @@ class Vendor extends React.Component {
           addressProvince: vd.addressProvince,
           addressCountry: vd.addressCountry,
           addressPostalCode: vd.addressPostalCode,
-          category: vd.category
+          category: vd.category,
+          about: vd.about
         }
       });
       if (resp.data.error) {
-        alert(resp.data.error.message);
+        this.setState({ errorMessage: resp.data.error });
       } else {
         console.log(resp);
         this.props.user.roleType = 1;
@@ -168,7 +177,7 @@ class Vendor extends React.Component {
             formData
           );
           if (respImg.data.error) {
-            alert(resp.data.error.message);
+            this.setState({ errorMessage: resp.data.error });
           } else {
             console.log(resp);
             this.setState({ vendorCreated: true });
@@ -178,7 +187,8 @@ class Vendor extends React.Component {
         }
       }
     } else {
-      alert(formValidationData.error);
+      console.log(formValidationData.error);
+      this.setState({ errorMessage: formValidationData.error });
     }
   };
   handlePointsDialogClose = () => {
@@ -187,27 +197,32 @@ class Vendor extends React.Component {
   formValid() {
     const { vendorData } = this.state;
     if (!vendorData.name || vendorData.name.length === 0) {
-      return { error: "invalid name" };
+      return { error: "Invalid name" };
     } else if (!vendorData.addressOne || vendorData.addressOne === 0) {
-      return { vendorData: "invalid Address Line One" };
+      return { error: "Invalid Address Line One" };
     } else if (!vendorData.addressTwo || vendorData.addressTwo === 0) {
-      return { vendorData: "invalid Address Line Two" };
+      return { error: "Invalid Address Line Two" };
     } else if (!vendorData.addressCity || vendorData.addressCity === 0) {
-      return { vendorData: "invalid City" };
+      return { error: "Invalid City" };
     } else if (
       !vendorData.addressProvince ||
       vendorData.addressProvince === 0
     ) {
-      return { vendorData: "invalid Province" };
+      return { error: "Invalid Province" };
     } else if (!vendorData.addressCountry || vendorData.addressCountry === 0) {
-      return { vendorData: "invalid Country" };
+      return { error: "Invalid Country" };
+    } else if (!vendorData.about || vendorData.about.length === 0) {
+      return { error: "Please tell us about yourself" };
     } else {
       return { success: true };
     }
   }
+  handleErrorDialogClose = () => {
+    this.setState({ errorMessage: null });
+  };
   render() {
     const { classes, user, history } = this.props;
-    const { vendorData, vendorCreated } = this.state;
+    const { vendorData, vendorCreated, errorMessage } = this.state;
     return (
       <Fragment>
         <NavBar history={history} back="/" admin={true} noMenu={true} />
@@ -405,6 +420,25 @@ class Vendor extends React.Component {
               </FormControl>
             </div>
           </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              id="outlined-name"
+              label="Why do you want to sign up as a vendor?"
+              value={vendorData.about}
+              onChange={this.handleChange("about")}
+              autoComplete="off"
+              variant="outlined"
+              className={classes.textField}
+              multiline
+              rows="4"
+              InputProps={{
+                classes: {
+                  notchedOutline: classes.textFieldOutline
+                }
+              }}
+            />
+          </Grid>
         </Grid>
         <Footer
           text={
@@ -431,6 +465,22 @@ class Vendor extends React.Component {
             ></img>
             <Typography variant="h4">Vendor Profile</Typography>
             <Typography variant="h5">Updated Successfully</Typography>
+          </Grid>
+        </CommonDialog>
+        <CommonDialog
+          open={errorMessage != null}
+          onClose={this.handleErrorDialogClose}
+        >
+          <Grid
+            container
+            direction="column"
+            justify="center"
+            alignItems="center"
+            className={classes.successDialog}
+          >
+            <HighlightOffRounded className={classes.errorIcon} />
+            <Typography variant="h4">Reward Program</Typography>
+            <Typography variant="h5">{errorMessage}</Typography>
           </Grid>
         </CommonDialog>
       </Fragment>

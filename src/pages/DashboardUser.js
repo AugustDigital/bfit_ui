@@ -14,7 +14,6 @@ import RewardCell from "./components/RewardCell";
 import { withRouter } from "react-router-dom";
 import CommonDialog from "./components/CommonDialog";
 import RoundGreenCheckmark from "../res/round_green_checkmark.svg";
-import RoleSelection from "./RoleSelection";
 import EmptyListPlaceholder from "./components/EmptyListPlaceholder";
 import CountUp from "react-countup";
 import moment from "moment";
@@ -26,6 +25,22 @@ const styles = theme => ({
       width: "100vw"
     }
   },
+  roleDialog: {
+    width: "100%",
+    height: "100%",
+    background: "url('/fancy_runner_home.png')",
+    backgroundPosition: "center center",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+    "& button": theme.buttons.primary
+  },
+  roleDialogTint: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    background: "#022937",
+    filter: "opacity(92%)"
+  },
   topSectionContainer: {
     width: "100%"
   },
@@ -35,7 +50,7 @@ const styles = theme => ({
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "space-around",
-    background: "linear-gradient(to top, #F1F8F9 85%, transparent)",
+    background: "linear-gradient(to top, #F1F8F9 95%, transparent)",
     width: "100%",
     paddingBottom: "100px",
     "& ul": {
@@ -203,12 +218,13 @@ class DashboardUser extends React.Component {
     }
   };
   render() {
-    const { classes, width, user, changeRole } = this.props;
+    const { classes, width, user } = this.props;
     const { pointsConverted, listItems } = this.state;
     const { steps, points } = user.steps[user.steps.length - 1];
     let pointsTotalEarned = 0;
     let pointsTotalSpent = 0;
-    let stepsUnclaimed = steps - points;
+    const REDEMPTION_RATIO = 10;
+    let stepsUnclaimed = steps - points * REDEMPTION_RATIO;
     user.steps.forEach(stepData => {
       pointsTotalEarned += stepData.points; // subtract redeemed points?
     });
@@ -218,8 +234,6 @@ class DashboardUser extends React.Component {
       }
     });
     let pointsTotal = pointsTotalEarned - pointsTotalSpent;
-    let showRoleSelection =
-      user.roleType === undefined || changeRole !== undefined;
 
     const smallScreen = !isWidthUp("md", width);
     return (
@@ -336,11 +350,6 @@ class DashboardUser extends React.Component {
             </Typography>
           </Grid>
         </CommonDialog>
-        <RoleSelection
-          open={showRoleSelection}
-          onClose={this.handleRoleDialogClose}
-          onRoleClick={this.onRoleClick}
-        />
       </Fragment>
     );
   }

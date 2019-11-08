@@ -13,6 +13,7 @@ import { createMuiTheme } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/styles";
 import MomentUtils from "@date-io/moment";
 import NavBar from "./components/NavBar";
+import { HighlightOffRounded } from "@material-ui/icons";
 import CommonDialog from "./components/CommonDialog";
 import RoundGreenCheckmark from "../res/round_green_checkmark.svg";
 import moment from "moment";
@@ -69,6 +70,10 @@ const styles = theme => ({
   uploadButton: {
     backgroundColor: "transparent",
     boxShadow: "none"
+  },
+  errorIcon: {
+    fontSize: 84,
+    color: "red"
   }
 });
 class CreateReward extends React.Component {
@@ -78,7 +83,8 @@ class CreateReward extends React.Component {
       points: "",
       endTime: moment.unix(moment().unix()),
       description: "",
-      image: null
+      image: null,
+      errorMessage: false
     },
     rewardCreated: false
   };
@@ -87,7 +93,7 @@ class CreateReward extends React.Component {
     if (this.props.id) {
       const resp = await this.props.api.get(`/getReward/${this.props.id}`);
       if (resp.data.error) {
-        alert("could not load rewards");
+        this.setState({ errorMessage: "Could not load reward" });
       } else {
         let item = resp.data.data;
         console.log(item);
@@ -121,7 +127,6 @@ class CreateReward extends React.Component {
     this.setState({ reward });
   };
   onCreateClick = async () => {
-    //todo if this.props.id then update
     const formValidationData = this.formValid();
     if (formValidationData.success) {
       const { reward } = this.state;
@@ -137,7 +142,7 @@ class CreateReward extends React.Component {
         }
       );
       if (resp.data.error) {
-        alert(resp.data.error.message);
+        this.setState({ errorMessage: resp.data.error });
       } else {
         console.log(resp);
         if (reward.image) {
@@ -149,7 +154,7 @@ class CreateReward extends React.Component {
             formData
           );
           if (respImg.data.error) {
-            alert(resp.data.error.message);
+            this.setState({ errorMessage: "Error while uploading image" });
           } else {
             console.log(resp);
             this.setState({ rewardCreated: true });
@@ -159,33 +164,37 @@ class CreateReward extends React.Component {
         }
       }
     } else {
-      alert(formValidationData.error);
+      this.setState({ errorMessage: formValidationData.error });
     }
   };
   handlePointsDialogClose = () => {
     this.setState({ rewardCreated: false });
   };
+  handleErrorDialogClose = () => {
+    this.setState({ errorMessage: false });
+  };
   formValid() {
     const { reward } = this.state;
     if (!reward.title || reward.title.length === 0) {
-      return { error: "invalid title" };
+      return { error: "Invalid reward title" };
     } else if (!reward.description || reward.title.description === 0) {
-      return { error: "invalid description" };
+      return { error: "Invalid reward description" };
     } else if (
       !reward.points ||
       reward.title.points === 0 ||
-      reward.title.points <= 0
+      reward.title.points <= 100 ||
+      reward.title.points >= 1000
     ) {
-      return { error: "invalid points value" };
+      return { error: "Points must be between 100 and 1000" };
     } else if (!reward.endTime || moment(reward.endTime) < moment().unix()) {
-      return { error: "invalid end time" };
+      return { error: "Invalid reward end time" };
     } else {
       return { success: true };
     }
   }
   render() {
     const { classes, id, history } = this.props;
-    const { reward, rewardCreated } = this.state;
+    const { reward, rewardCreated, errorMessage } = this.state;
     return (
       <Fragment>
         <NavBar history={history} back="/" admin={true} />
@@ -220,6 +229,11 @@ class CreateReward extends React.Component {
             variant="outlined"
             type="number"
             className={classes.textField}
+            inputProps={{
+              min: "100",
+              max: "1000",
+              step: "1"
+            }}
             InputProps={{
               classes: {
                 notchedOutline: classes.textFieldOutline
@@ -322,6 +336,19 @@ class CreateReward extends React.Component {
             ></img>
             <Typography variant="h4">Reward Program</Typography>
             <Typography variant="h5">Created Successfully</Typography>
+          </Grid>
+        </CommonDialog>
+        <CommonDialog open={errorMessage} onClose={this.handleErrorDialogClose}>
+          <Grid
+            container
+            direction="column"
+            justify="center"
+            alignItems="center"
+            className={classes.successDialog}
+          >
+            <HighlightOffRounded className={classes.errorIcon} />
+            <Typography variant="h4">Reward Program</Typography>
+            <Typography variant="h5">{errorMessage}</Typography>
           </Grid>
         </CommonDialog>
       </Fragment>

@@ -11,10 +11,10 @@ class Dashboard extends React.Component {
   state = { user: null };
   async componentDidMount() {}
   render() {
-    const { user, API_URL, changeRole } = this.props;
+    const { user, API_URL } = this.props;
     let content = null;
     if (user) {
-      if (user.roleType === 1 && !changeRole) {
+      if (user.roleType === 1) {
         content = <DashboardVendor API_URL={API_URL} {...this.props} />;
       } else {
         content = <DashboardUser API_URL={API_URL} {...this.props} />;
