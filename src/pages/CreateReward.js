@@ -181,9 +181,9 @@ class CreateReward extends React.Component {
       return { error: "Invalid reward description" };
     } else if (
       !reward.points ||
-      reward.title.points === 0 ||
-      reward.title.points <= 100 ||
-      reward.title.points >= 1000
+      reward.points === 0 ||
+      reward.points <= 100 ||
+      reward.points >= 1000
     ) {
       return { error: "Points must be between 100 and 1000" };
     } else if (!reward.endTime || moment(reward.endTime) < moment().unix()) {
