@@ -156,6 +156,22 @@ class Reward extends React.Component {
   }
   onRedeemClick = async () => {
     const { reward } = this.state;
+    const { user } = this.props;
+    let pointsTotalEarned = 0;
+    let pointsTotalSpent = 0;
+    user.steps.forEach(stepData => {
+      pointsTotalEarned += stepData.points; // subtract redeemed points?
+    });
+    user.redemptions.forEach(redData => {
+      if (redData) {
+        pointsTotalSpent += redData.cost;
+      }
+    });
+    let cost = reward.points;
+    if (pointsTotalEarned - pointsTotalSpent - cost < 0) {
+      this.setState({ errorMessage: "Not enough points to redeem" });
+      return;
+    }
     const resp = await this.props.api.post("/redeemReward/" + reward.id);
     if (resp.data.error) {
       this.setState({ errorMessage: resp.data.error });
