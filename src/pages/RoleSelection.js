@@ -128,7 +128,7 @@ class RoleSelection extends React.Component {
               classes={classes}
               roleType={1}
               title="VENDOR"
-              description="Vendor are businesses that create rewards for BFitters. Vendor join the BFit platform to increase user engagement. In order to be a vendor, business will need to submit an application after log in and BFit administrators will process the application."
+              description="Vendors are businesses that create rewards for BFitters. Vendors join the BFit platform to increase user engagement. In order to be a vendor, businesses will need to submit an application after logging in and BFit administrators will process the application."
               buttonText="I want to be a vendor"
             />
           </Grid>
