@@ -21,7 +21,10 @@ const styles = theme => ({
     backgroundRepeat: "no-repeat"
   },
   leftContainer: {
-    height: "100%"
+    height: "100%",
+    [theme.breakpoints.down("sm")]: {
+      height: "auto"
+    }
   },
 
   contentContainer: {
