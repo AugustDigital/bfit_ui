@@ -50,3 +50,5 @@ server{
 }
 
 ```
+
+\*For Google Login on your domain remeber to configure https://console.developers.google.com/apis/credentials/consent to add your domain to list of Authorized domains
