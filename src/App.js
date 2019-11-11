@@ -36,7 +36,6 @@ class App extends React.Component {
   state = { loading: true, user: null };
   async componentDidMount() {
     const resp = await instance.get("/user");
-    console.log(resp.data.data);
     if (resp.data.error) {
       this.setState({ loading: false, error: true });
     } else {
@@ -48,7 +47,6 @@ class App extends React.Component {
       console.log("authed=" + (user !== null));
       return component;
     } else {
-      console.log("redirect");
       return <Redirect to="/login" />;
     }
   }

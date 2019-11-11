@@ -27,8 +27,9 @@ const styles = theme => ({
     background: "white"
   },
   points: {
-    fontSize: "0.8em",
-    color: "#032F41"
+    fontSize: "1.2em",
+    color: "#032F41",
+    fontFamily: "BebasNeue"
   },
   date: {
     fontSize: "0.8em",
@@ -65,13 +66,14 @@ class PointList extends React.Component {
         {item.userName && (
           <Typography className={classes.date}>{item.userName}</Typography>
         )}
-        <Typography>{item.points.toLocaleString()} SWEATS</Typography>
+        <Typography className={classes.points}>
+          {item.points.toLocaleString()} SWEATS
+        </Typography>
         <Typography className={classes.date}>
           {shortDateFormat(item.timestamp)}
         </Typography>
       </Grid>
     );
-    console.log(item);
     if (item.pointsType === 1) {
       return (
         <div

@@ -3,6 +3,7 @@ import { withStyles, Grid, Typography } from "@material-ui/core";
 import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
 import compose from "recompose/compose";
 import RoleSelection from "./RoleSelection";
+import LogoBfitLong from "../res/logo_bfit_long.svg";
 const contentMarginLeft = "5vw";
 const styles = theme => ({
   root: {
@@ -31,30 +32,28 @@ const styles = theme => ({
         "linear-gradient(rgba(250,250,250,0.4), rgba(250,250,250,0.1)), url('/fancy_runner.png');"
     },
     height: "100%",
-    "& h1": {
-      color: "#032F41",
-      fontWeight: "600",
-      fontSize: "5em",
+    "& img": {
       marginLeft: contentMarginLeft
     },
     "& h2": {
+      fontFamily: "BebasNeue",
       [theme.breakpoints.down("sm")]: {
         marginRight: contentMarginLeft,
         width: "auto"
       },
       color: "#032F41",
       fontWeight: "400",
-      fontSize: "2.4em",
+      fontSize: "2.6em",
       marginTop: "3vh",
       letterSpacing: "2.5px",
       lineHeight: "1.5em",
       marginLeft: contentMarginLeft,
-      marginRight: "50%",
       width: "60%"
     },
     "& h6": {
       color: "#032F41",
-      marginLeft: contentMarginLeft
+      marginLeft: contentMarginLeft,
+      marginRight: contentMarginLeft
     }
   },
   footer: {
@@ -84,7 +83,6 @@ class Login extends React.Component {
   render() {
     const { classes, width } = this.props;
     const smallScreen = !isWidthUp("md", width);
-    console.log(smallScreen);
     return (
       <Grid
         className={classes.root}
@@ -110,20 +108,37 @@ class Login extends React.Component {
                 alignItems="stretch"
               >
                 <Grid item>
-                  <Typography variant="h1">BFIT</Typography>
+                  <img alt="logo" src={LogoBfitLong} />
                 </Grid>
                 <Grid item>
                   <Typography variant="h2">
-                    Earn rewards while you stay fit.
+                    Earn rewards
+                    <br />
+                    while you stay fit.
                   </Typography>
 
                   <Typography variant="subtitle1">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur.
+                    Bfit is a lifestyle Open App that promotes healthy
+                    lifestyles and rewards users for being active. It allows
+                    users to extract their data from health trackers into a
+                    shared ecosystem of offers by health-focused companies.
+                    Here's how to get started:
+                    <ol>
+                      <li>
+                        iPhone: Download{" "}
+                        <a href="https://apps.apple.com/us/app/google-fit-activity-tracker/id1433864494">
+                          Google Fit
+                        </a>{" "}
+                        from the App Store
+                        <br />
+                        Android: You're good to go
+                      </li>
+                      <li>
+                        Enable Google Fit to track your "steps" from the
+                        settings
+                      </li>
+                      <li>Earn rewards with every step!</li>
+                    </ol>
                   </Typography>
                 </Grid>
                 <Grid item>

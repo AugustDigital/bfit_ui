@@ -101,7 +101,6 @@ class DashboardVendor extends React.Component {
     if (resp.data.error) {
       alert("could not load rewards");
     } else {
-      console.log(resp.data);
       let expiredListItems = [];
       let listItems = [];
       resp.data.data.forEach(item => {
@@ -123,7 +122,6 @@ class DashboardVendor extends React.Component {
           listItems.push(itemModel);
         }
       });
-      console.log({ listItems, expiredListItems });
       this.setState({ listItems, expiredListItems });
     }
   }
@@ -150,7 +148,6 @@ class DashboardVendor extends React.Component {
     const { classes, width, history, user, API_URL } = this.props;
     const { value, expiredListItems, listItems } = this.state;
     const smallScreen = !isWidthUp("md", width);
-    console.log(user);
     let points = 0;
     user.vendorRedemptions.forEach(red => {
       points += red.cost;

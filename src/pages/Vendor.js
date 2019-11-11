@@ -110,7 +110,6 @@ class Vendor extends React.Component {
     errorMessage: null
   };
   async componentDidMount() {
-    console.log(!this.props.user.vendorData ? "new vendor" : "existing vendor");
     if (this.props.user.vendorData) {
       const vd = this.props.user.vendorData;
       this.setState({
@@ -133,7 +132,6 @@ class Vendor extends React.Component {
     let vendorData = this.state.vendorData;
     if (name === "file") {
       vendorData.image = event.target.files[0];
-      console.log(vendorData.image);
     } else {
       vendorData[name] = event.target.value;
     }
@@ -163,14 +161,11 @@ class Vendor extends React.Component {
       if (resp.data.error) {
         this.setState({ errorMessage: resp.data.error });
       } else {
-        console.log(resp);
         this.props.user.roleType = 1;
         this.props.user.vendorData = resp.data.data.vendorData;
         this.props.user.vendorRedemptions = resp.data.data.vendorRedemptions;
-        console.log(this.props.user);
         if (vendorData.image && vendorData.image.name) {
           let formData = new FormData();
-          console.log(vendorData.image);
           formData.append("image", vendorData.image);
           const respImg = await this.props.api.post(
             `/setVendorImage`,
@@ -179,7 +174,6 @@ class Vendor extends React.Component {
           if (respImg.data.error) {
             this.setState({ errorMessage: resp.data.error });
           } else {
-            console.log(resp);
             this.setState({ vendorCreated: true });
           }
         } else {
@@ -187,7 +181,6 @@ class Vendor extends React.Component {
         }
       }
     } else {
-      console.log(formValidationData.error);
       this.setState({ errorMessage: formValidationData.error });
     }
   };

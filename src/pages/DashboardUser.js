@@ -83,6 +83,7 @@ const styles = theme => ({
     }
   },
   pointsSublable: {
+    fontFamily: "BebasNeue",
     color: "black",
     fontWeight: "400",
     letterSpacing: "4px",
@@ -93,10 +94,11 @@ const styles = theme => ({
     }
   },
   rewardsTitle: {
+    fontFamily: "BebasNeue",
     letterSpacing: "2.5px",
     color: "#032F41",
     fontWeight: "400",
-    fontSize: "1.4em",
+    fontSize: "1.5em",
     margin: "30px 0 10px 0",
     [theme.breakpoints.down("sm")]: {
       textAlign: "center"
@@ -144,7 +146,8 @@ const styles = theme => ({
     },
     "& h5": {
       fontSize: "1.2em",
-      marginTop: "10px"
+      marginTop: "10px",
+      fontFamily: "BebasNeue"
     }
   }
 });
@@ -160,7 +163,6 @@ class DashboardUser extends React.Component {
     if (resp.data.error) {
       alert("could not load rewards");
     } else {
-      console.log(resp.data);
       let expiredListItems = [];
       let listItems = [];
       resp.data.data.forEach(item => {
@@ -182,7 +184,6 @@ class DashboardUser extends React.Component {
           listItems.push(itemModel);
         }
       });
-      //console.log({ listItems, expiredListItems });
       this.setState({ listItems, expiredListItems });
     }
   }
@@ -191,7 +192,6 @@ class DashboardUser extends React.Component {
   };
   onPointsClick = async () => {
     const resp = await this.props.api.get("/convertToPoints");
-    console.log(resp);
     if (resp.data.error) {
       alert("Server Error!");
     } else {

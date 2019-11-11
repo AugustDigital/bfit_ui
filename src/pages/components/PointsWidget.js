@@ -16,8 +16,8 @@ const styles = theme => ({
       fontSize: "1.9em"
     },
     "& h6": {
-      fontSize: "0.6em",
-      letterSpacing: "2px"
+      fontSize: "0.9em",
+      fontFamily: "BebasNeue"
     }
   },
   wideButton: {

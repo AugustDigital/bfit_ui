@@ -131,8 +131,6 @@ class Admin extends React.Component {
     if (resp.data.error) {
       alert("could not load pending vendors");
     } else {
-      console.log(resp.data);
-      console.log(resp.data);
       this.setState({ listItems: resp.data.data });
     }
   };
@@ -152,7 +150,6 @@ class Admin extends React.Component {
   render() {
     const { classes } = this.props;
     const { listItems } = this.state;
-    console.log(listItems);
     return (
       <Grid
         container

@@ -89,14 +89,12 @@ class CreateReward extends React.Component {
     rewardCreated: false
   };
   async componentDidMount() {
-    console.log(this.props.id);
     if (this.props.id) {
       const resp = await this.props.api.get(`/getReward/${this.props.id}`);
       if (resp.data.error) {
         this.setState({ errorMessage: "Could not load reward" });
       } else {
         let item = resp.data.data;
-        console.log(item);
         this.setState({
           reward: {
             id: item["_id"],
@@ -119,7 +117,6 @@ class CreateReward extends React.Component {
       reward[name] = event;
     } else if (name === "file") {
       reward.image = event.target.files[0];
-      console.log(reward.image);
     } else {
       reward[name] = event.target.value;
     }
@@ -144,10 +141,8 @@ class CreateReward extends React.Component {
       if (resp.data.error) {
         this.setState({ errorMessage: resp.data.error });
       } else {
-        console.log(resp);
         if (reward.image) {
           let formData = new FormData();
-          console.log(reward.image);
           formData.append("image", reward.image);
           const respImg = await this.props.api.post(
             `/setRewardImage/${resp.data.data["_id"]}`,
@@ -156,7 +151,6 @@ class CreateReward extends React.Component {
           if (respImg.data.error) {
             this.setState({ errorMessage: "Error while uploading image" });
           } else {
-            console.log(resp);
             this.setState({ rewardCreated: true });
           }
         } else {

@@ -13,7 +13,7 @@ import { Redirect } from "react-router-dom";
 import RewardCell from "./components/RewardCell";
 import NavBar from "./components/NavBar";
 import PointList from "./components/PointList";
-import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
+import withWidth from "@material-ui/core/withWidth";
 import CommonDialog from "./components/CommonDialog";
 import EmptyListPlaceholder from "./components/EmptyListPlaceholder";
 import RoundGreenCheckmark from "../res/round_green_checkmark.svg";
@@ -36,6 +36,7 @@ const styles = theme => ({
     height: "300px"
   },
   rewardsTitle: {
+    fontFamily: "BebasNeue",
     letterSpacing: "2.5px",
     color: "#032F41",
     fontWeight: "400",
@@ -126,7 +127,6 @@ class Reward extends React.Component {
       alert("could not load rewards");
     } else {
       let item = resp.data.data;
-      console.log(item);
       this.setState({
         reward: {
           id: item["_id"],
@@ -176,7 +176,6 @@ class Reward extends React.Component {
     if (resp.data.error) {
       this.setState({ errorMessage: resp.data.error });
     } else {
-      console.log(resp);
       this.props.user.redemptions = resp.data.data.redemptions;
       this.setState({ rewardRedeemed: true });
     }
@@ -188,10 +187,8 @@ class Reward extends React.Component {
     this.setState({ errorMessage: false });
   };
   render() {
-    const { classes, id, history, width, admin, user } = this.props;
+    const { classes, id, history, admin, user } = this.props;
     const { value, reward, rewardRedeemed, errorMessage } = this.state;
-    const smallScreen = isWidthDown("sm", width);
-    console.log(smallScreen ? "small screen" : "wide screen");
     let hasRedeemed = false;
     const redItems = [];
     let pointsTotalEarned = 0;
@@ -219,8 +216,6 @@ class Reward extends React.Component {
       });
     } else {
       user.redemptions.forEach(red => {
-        console.log(red.rewardId);
-        console.log(id);
         if (red && red.rewardId === id) {
           hasRedeemed = true;
           redItems.push({

@@ -16,9 +16,10 @@ const styles = theme => ({
     color: "#032F41",
     borderRadius: "2px",
     "& h2": {
+      fontFamily: "BebasNeue",
       textTransform: "uppercase",
-      fontSize: "1.1em",
-      fontWeight: "600",
+      fontSize: "1.5em",
+      fontWeight: "500",
       marginBottom: 0
     },
     "& p": {

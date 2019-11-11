@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
 import {
   withStyles,
-  Typography,
   IconButton,
   Popper,
   Paper,
@@ -16,6 +15,7 @@ import CloseIcon from "../../res/close_icon.svg";
 import BackIcon from "../../res/back_icon.svg";
 import EditIcon from "../../res/edit_icon.svg";
 import PointList from "./PointList";
+import LogoBfitShort from "../../res/logo_bfit_short.svg";
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 const styles = theme => ({
   root: {
@@ -50,6 +50,10 @@ const styles = theme => ({
     width: "25px",
     height: "25px",
     margin: "12px"
+  },
+  logo: {
+    height: "50px",
+    padding: "8px"
   },
   popper: {
     marginTop: "7px",
@@ -176,7 +180,6 @@ class NavBar extends React.Component {
     this.setState({ anchorRef: this.state.anchorRef ? null : e.currentTarget });
   };
   handleOnBackClick = () => {
-    console.log(this.props);
     this.props.history.push(this.props.back);
   };
   handleArrowRef = node => {
@@ -257,9 +260,7 @@ class NavBar extends React.Component {
             <div className={classes.backButtonPlaceHolder} />
           )}
 
-          <Typography className={classes.header} variant="h5">
-            BFIT
-          </Typography>
+          <img className={classes.logo} alt="logo" src={LogoBfitShort} />
           {!noMenu ? (
             onEditClick ? (
               <IconButton
