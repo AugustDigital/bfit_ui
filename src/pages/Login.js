@@ -65,6 +65,17 @@ const styles = theme => ({
     maxWidth: "100%",
     color: "white",
     textAlign: "center"
+  },
+  blurb: {
+    [theme.breakpoints.down("sm")]: {
+      backgroundColor: "rgba(255,255,255,0.85)",
+      borderRadius: "5px",
+      padding: "20px",
+      marginBottom: "5px",
+      marginLeft: "5px",
+      marginRight: "5px",
+      boxShadow: "0px 2px 5px 3px rgba(0,0,0,0.1)"
+    }
   }
 });
 //const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
@@ -116,30 +127,31 @@ class Login extends React.Component {
                     <br />
                     while you stay fit.
                   </Typography>
-
-                  <Typography variant="subtitle1">
-                    Bfit is a lifestyle Open App that promotes healthy
-                    lifestyles and rewards users for being active. It allows
-                    users to extract their data from health trackers into a
-                    shared ecosystem of offers by health-focused companies.
-                    Here's how to get started:
-                    <ol>
-                      <li>
-                        iPhone: Download{" "}
-                        <a href="https://apps.apple.com/us/app/google-fit-activity-tracker/id1433864494">
-                          Google Fit
-                        </a>{" "}
-                        from the App Store
-                        <br />
-                        Android: You're good to go
-                      </li>
-                      <li>
-                        Enable Google Fit to track your "steps" from the
-                        settings
-                      </li>
-                      <li>Earn rewards with every step!</li>
-                    </ol>
-                  </Typography>
+                  <Grid item className={classes.blurb}>
+                    <Typography variant="subtitle1">
+                      Bfit is a lifestyle Open App that promotes healthy
+                      lifestyles and rewards users for being active. It allows
+                      users to extract their data from health trackers into a
+                      shared ecosystem of offers by health-focused companies.
+                      Here's how to get started:
+                      <ol>
+                        <li>
+                          iPhone: Download{" "}
+                          <a href="https://apps.apple.com/us/app/google-fit-activity-tracker/id1433864494">
+                            Google Fit
+                          </a>{" "}
+                          from the App Store
+                          <br />
+                          Android: You're good to go
+                        </li>
+                        <li>
+                          Enable Google Fit to track your "steps" from the
+                          settings
+                        </li>
+                        <li>Earn rewards with every step!</li>
+                      </ol>
+                    </Typography>
+                  </Grid>
                 </Grid>
                 <Grid item>
                   {smallScreen && (
