@@ -6,11 +6,11 @@ In the project directory, you can run:
 
 Run before starting/building your server
 
-### `react-scripts start`
+### `npm start`
 
 To start a local host debug session of the react app.
 
-### `npm react-scripts build`
+### `npm run-script build`
 
 To build a production bundle of this react app.
 
