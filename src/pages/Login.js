@@ -139,7 +139,7 @@ class Login extends React.Component {
                       Here's how to get started:
                       <ol>
                         <li>
-                          For iPhone users, download
+                          For iPhone users, download{" "}
                           <a href="https://apps.apple.com/us/app/google-fit-activity-tracker/id1433864494">
                             Google Fit
                           </a>{" "}
