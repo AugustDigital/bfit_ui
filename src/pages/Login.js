@@ -139,16 +139,14 @@ class Login extends React.Component {
                       Here's how to get started:
                       <ol>
                         <li>
-                          iPhone: Download{" "}
+                          For iPhone users, download
                           <a href="https://apps.apple.com/us/app/google-fit-activity-tracker/id1433864494">
                             Google Fit
                           </a>{" "}
-                          from the App Store
-                          <br />
-                          Android: You're good to go
+                          from the App Store (Android users can skip this step)
                         </li>
                         <li>
-                          Enable Google Fit to track your "steps" from the
+                          Enable Google Fit to track your "steps" in the
                           settings
                         </li>
                         <li>Earn rewards with every step!</li>

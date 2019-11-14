@@ -117,8 +117,8 @@ class RoleSelection extends React.Component {
             <RoleCell
               classes={classes}
               roleType={0}
-              title="BFITTER"
-              description="BFitters are at the centre of BFit. BFitters can earn SWEAT points by walking, monitoring their steps with Google Fit and claiming those steps in BFit. There are multiple rewards that BFitters can get with their SWEAT points."
+              title="BFitter"
+              description="BFitters are at the core of BFit. They earn SWEAT points with every step and can claim rewards from a variety of vendors focused on health and lifestyle."
               buttonText="I want to be a bfitter"
             />
           </Grid>
@@ -127,8 +127,8 @@ class RoleSelection extends React.Component {
             <RoleCell
               classes={classes}
               roleType={1}
-              title="VENDOR"
-              description="Vendors are businesses that create rewards for BFitters. Vendors join the BFit platform to increase user engagement. In order to be a vendor, businesses will need to submit an application after logging in and BFit administrators will process the application."
+              title="Vendor"
+              description="Vendors are businesses that create rewards for BFitters. They join BFit to increase user engagement and have access to a active and healthy user base. If you want to be a vendor on BFit, login with your Google account and submit an application!"
               buttonText="I want to be a vendor"
             />
           </Grid>
