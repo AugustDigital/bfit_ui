@@ -131,7 +131,9 @@ class Admin extends React.Component {
     if (resp.data.error) {
       alert("could not load pending vendors");
     } else {
-      this.setState({ listItems: resp.data.data });
+      this.setState({
+        listItems: resp.data.data.filter(item => item.vendorData)
+      });
     }
   };
   onActionClick = async (id, flag) => {

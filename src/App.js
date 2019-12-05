@@ -71,18 +71,15 @@ class App extends React.Component {
                 <Route
                   path="/admin"
                   render={props =>
-                    this.renderIfFullVendor(
-                      this.renderIfLoggedIn(
-                        <Admin
-                          {...props}
-                          API_URL={API_URL}
-                          id={query.parse(window.location.search).id}
-                          admin={query.parse(window.location.search).admin}
-                          user={user}
-                          api={instance}
-                        />,
-                        user
-                      ),
+                    this.renderIfLoggedIn(
+                      <Admin
+                        {...props}
+                        API_URL={API_URL}
+                        id={query.parse(window.location.search).id}
+                        admin={query.parse(window.location.search).admin}
+                        user={user}
+                        api={instance}
+                      />,
                       user
                     )
                   }
