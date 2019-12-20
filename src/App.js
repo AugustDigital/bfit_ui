@@ -51,13 +51,11 @@ class App extends React.Component {
     }
   }
   renderIfFullVendor(component, user) {
-    // if (user && user.roleType === 1 && !user.vendorData) {
-    //   return <Redirect to="/vendor" />;
-    // } else {
-    //   return component;
-    // }
-    // temporary removed vendor redirect for debuggingadmin flow
-    return component;
+    if (user && user.roleType === 1 && !user.vendorData) {
+      return <Redirect to="/vendor" />;
+    } else {
+      return component;
+    }
   }
   render() {
     const { classes } = this.props;
